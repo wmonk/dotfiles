@@ -4,13 +4,12 @@
 set shell=sh
 
 " Setup dein  ---------------------------------------------------------------{{{
-  if (!isdirectory(expand("$HOME/.config/nvim/repos/github.com/Shougo/dein.vim")))
-    call system(expand("mkdir -p $HOME/.config/nvim/repos/github.com"))
-    call system(expand("git clone https://github.com/Shougo/dein.vim $HOME/.config/nvim/repos/github.com/Shougo/dein.vim"))
-  endif
+if &compatible
+	set nocompatible
+endif
 
-  set runtimepath+=~/.config/nvim/repos/github.com/Shougo/dein.vim/
-  call dein#begin(expand('~/.config/nvim'))
+  set runtimepath+=/Users/willm/.config/nvim/repos/github.com/Shougo/dein.vim
+  call dein#begin('/Users/willm/.config/nvim/')
   call dein#add('Shougo/dein.vim')
 
   " syntax
@@ -85,6 +84,8 @@ set shell=sh
   call dein#add('itchyny/vim-cursorword') " Underlines the word under cursor
   call dein#add('rhysd/nyaovim-popup-tooltip') " Show images in a tooltip
   call dein#add('tyru/open-browser.vim') " Open in browser
+  call dein#add('sbdchd/neoformat') " Allow formating
+  call dein#add('Numkil/ag.nvim') " Allow ag searching
   "
   " deoplete stuff
   call dein#add('Shougo/deoplete.nvim')
@@ -116,6 +117,13 @@ set shell=sh
   " let $NVIM_PYTHON_LOG_LEVEL='DEBUG'
   " set clipboard+=unnamedplus
 
+ let g:switch_custom_definitions =
+    \ [
+    \ {
+    \   'it.only': 'it',
+    \   'it': 'it.only',
+    \ }
+    \ ]
   filetype plugin indent on
 " Let airline tell me my status
   set noshowmode
@@ -175,7 +183,7 @@ set shell=sh
   map <Leader>w :w<CR>
   "
   " Make it so that a curly brace automatically inserts an indented line
-  inoremap {<CR> {<CR>};<Esc>O<BS><Tab>
+  inoremap {<CR> {<CR>}<Esc>O<BS><Tab>
   "
   " Quickly exit insert mode
   imap jk <Esc>
@@ -267,6 +275,9 @@ set shell=sh
   " insert mode
   autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
   autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+  "
+  " Highlight git changes
+  nnoremap <leader>h :GitGutterLineHighlightsToggle<CR>
 "}}}"
 
 " Themes, Commands, etc  ----------------------------------------------------{{{

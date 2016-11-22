@@ -60,8 +60,7 @@ set __fish_git_prompt_describe_style 'branch'
 set __fish_git_prompt_showuntrackedfiles 'yes'
 
 function vimfind
-    echo $argv
-    grep -lR $argv[1] $argv[2] | xargs -o vim
+    ag -l $argv[1] $argv[2] | xargs -o nvim
 end
 
 function vimlint
