@@ -1,12 +1,12 @@
-" vim: set ts=2 sw=4
+" vim: set ts=2 sw=2
 
 " Use sh shell so that git works in the NerdTree buffer
 set shell=sh
 
 " Setup dein  ---------------------------------------------------------------{{{
-if &compatible
-	set nocompatible
-endif
+  if &compatible
+    set nocompatible
+  endif
 
   set runtimepath+=/Users/willm/.config/nvim/repos/github.com/Shougo/dein.vim
   call dein#begin('/Users/willm/.config/nvim/')
@@ -28,6 +28,7 @@ endif
   call dein#add('jtratner/vim-flavored-markdown', {'on_ft': 'markdown'})
   call dein#add('suan/vim-instant-markdown', {'on_ft': 'markdown'})
   call dein#add('HerringtonDarkholme/yats.vim')
+  call dein#add('alvan/vim-closetag')
   "
   " async stuff
   call dein#add('Shougo/vimproc.vim', {'build' : 'make'})
@@ -38,8 +39,8 @@ endif
   call dein#add('vim-airline/vim-airline-themes')
   "
   " typescript stuff
-  " call dein#add('HerringtonDarkholme/yats.vim')
-  " call dein#add('mhartington/vim-typings')
+  call dein#add('HerringtonDarkholme/yats.vim')
+  call dein#add('mhartington/vim-typings')
   call dein#add('quramy/tsuquyomi')
   "
   " purescript stuff
@@ -83,7 +84,6 @@ endif
   call dein#add('junegunn/goyo.vim') " Distraction free coding, like iA writer
   call dein#add('itchyny/vim-cursorword') " Underlines the word under cursor
   call dein#add('rhysd/nyaovim-popup-tooltip') " Show images in a tooltip
-  call dein#add('tyru/open-browser.vim') " Open in browser
   call dein#add('sbdchd/neoformat') " Allow formating
   call dein#add('Numkil/ag.nvim') " Allow ag searching
   "
@@ -91,7 +91,7 @@ endif
   call dein#add('Shougo/deoplete.nvim')
   call dein#add('steelsojka/deoplete-flow')
   call dein#add('carlitux/deoplete-ternjs')
-  call dein#add('mhartington/deoplete-typescript')
+  " call dein#add('mhartington/deoplete-typescript')
   call dein#add('Shougo/neco-vim', {'on_ft': 'vim'})
   call dein#add('Shougo/neoinclude.vim')
   "
@@ -117,7 +117,7 @@ endif
   " let $NVIM_PYTHON_LOG_LEVEL='DEBUG'
   " set clipboard+=unnamedplus
 
- let g:switch_custom_definitions =
+  let g:switch_custom_definitions =
     \ [
     \ {
     \   'it.only': 'it',
@@ -167,12 +167,14 @@ endif
   " let g:deoplete#enable_profile = 1
   " call deoplete#enable_logging('DEBUG', 'tss.log')
 
+  " filenames like *.xml, *.html, *.xhtml, ...
+  " let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.js,*.jsx,*.ts,*.tsx"
   let g:go_fmt_command = "goimports"
   let g:table_mode_corner="|"
 
   " let g:vimfiler_as_default_explorer = 1
   " autocmd filetype vimfiler set nonumber norelativenumber
-  let g:dein#install_progress_type = 'none'
+  " let g:dein#install_progress_type = 'none'
 " }}}
 
 " System mappings  ----------------------------------------------------------{{{
@@ -258,9 +260,6 @@ endif
   map <esc> :noh<cr>
   tmap <esc> <c-\><c-n><esc><cr>
   "
-  " Hint typescript
-  autocmd FileType typescript nmap <buffer> <Leader>T : <C-u>echo tsuquyomi#hint()<CR>
-  "
   " Something?
   nnoremap <leader>e :call <SID>SynStack()<CR>
   function! <SID>SynStack()
@@ -279,6 +278,22 @@ endif
   " Highlight git changes
   nnoremap <leader>h :GitGutterLineHighlightsToggle<CR>
 "}}}"
+
+" Tsuquyomi -----------------------------------------------------------------{{{
+  "
+  " Hint typescript
+  autocmd FileType typescript nmap <buffer> <Leader>T : <C-u>echo tsuquyomi#hint()<CR>
+  "
+  " Got to definition
+  map <Leader>d <Plug>(TsuquyomiDefinition)
+  "
+  " Use single quotes for imports
+  " let g:tsuquyomi_single_quote_import=1
+  " let g:tsuquyomi_disable_quickfix = 1
+  autocmd FileType typescript setlocal completeopt+=preview
+  nmap <buffer> <Leader>t : <C-u>echo tsuquyomi#hint()<CR>
+  autocmd FileType typescript nmap <buffer> <Leader>T : <C-u>echo tsuquyomi#hint()<CR>
+" }}}
 
 " Themes, Commands, etc  ----------------------------------------------------{{{
   syntax enable
@@ -299,9 +314,6 @@ endif
   let g:oceanic_next_terminal_bold = 1
   "
   set background=dark
-  "
-  " Toggle tagbar
-  nnoremap <leader>o :TagbarToggle<CR>
 "}}}
 
 " Fold, gets it's own section  ----------------------------------------------{{{
@@ -400,10 +412,7 @@ endif
 
 "}}}
 
-" Javscript omni complete --------------------------------------{{{
-  " let g:tsuquyomi_disable_quickfix = 1
-  autocmd FileType typescript setlocal completeopt+=preview
-  nmap <buffer> <Leader>t : <C-u>echo tsuquyomi#hint()<CR>
+" Javscript omni complete ---------------------------------------------------{{{
   let g:vim_json_syntax_conceal = 0
   set splitbelow
   set completeopt+=noselect
@@ -416,7 +425,6 @@ endif
   function! Multiple_cursors_after()
     let b:deoplete_disable_auto_complete=0
   endfunction
-  autocmd FileType typescript nmap <buffer> <Leader>T : <C-u>echo tsuquyomi#hint()<CR>
   call deoplete#custom#set('buffer', 'mark', 'buffer')
   call deoplete#custom#set('ternjs', 'mark', '')
   call deoplete#custom#set('omni', 'mark', 'omni')
@@ -459,7 +467,7 @@ endif
   let g:unite_prompt='❯ '
   let g:unite_source_rec_async_command =['ag', '--follow', '--nocolor', '--nogroup','--hidden', '-g', '', '--ignore', '.git', '--ignore', '*.png', '--ignore', 'lib']
   " Search files by name
-  nnoremap <silent> <c-p> :Unite -auto-resize -start-insert -direction=botright file_rec/neovim<CR>
+  nnoremap <silent> <c-p> :Unite -auto-resize -start-insert -direction=botright file_rec/async<CR>
   "
   " Change colorschemes
   nnoremap <silent> <leader>c :Unite -auto-resize -start-insert -direction=botright colorscheme<CR>
@@ -468,7 +476,7 @@ endif
   nnoremap <silent> <leader>u :call dein#update()<CR>
   "
   " Open outline pane in right
-  " nnoremap <silent> <leader>o :Unite -winwidth=45 -vertical -direction=botright outline<CR>
+  nnoremap <silent> <leader>o :Unite -winwidth=45 -vertical -direction=botright outline<CR>
   "
   nnoremap <leader>I :Unite -no-split -vertical -direction=topleft issue:github:driftyco/
   "
@@ -554,52 +562,52 @@ endif
   nmap <leader>9 <Plug>AirlineSelectTab9
 "}}}
 
-" Linting -------------------------------------------------------------------{{{
-  function! StrTrim(txt)
-    return substitute(a:txt, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
-  endfunction
-
-  let g:neomake_javascript_enabled_makers = []
-
-  let g:flow_path = StrTrim(system('PATH=$(npm bin):$PATH && which flow'))
-  let g:flow#enable = 0
-
-  if findfile('.flowconfig', '.;') !=# ''
-    let g:flow_path = StrTrim(system('PATH=$(npm bin):$PATH && which flow'))
-    let g:flow#enable = 1
-    if g:flow_path != 'flow not found'
-      let g:neomake_javascript_flow_maker = {
-            \ 'exe': 'sh',
-            \ 'args': ['-c', g:flow_path.' --json 2> /dev/null | flow-vim-quickfix'],
-            \ 'errorformat': '%E%f:%l:%c\,%n: %m',
-            \ 'cwd': '%:p:h'
-            \ }
-      let g:neomake_javascript_enabled_makers = g:neomake_javascript_enabled_makers + [ 'flow']
-    endif
-  endif
-
-  let g:neomake_javascript_enabled_makers = g:neomake_javascript_enabled_makers + [ 'eslint']
-  function! neomake#makers#ft#javascript#eslint()
-      return {
-          \ 'args': ['-f', 'compact'],
-          \ 'errorformat': '%E%f: line %l\, col %c\, Error - %m,' .
-          \ '%W%f: line %l\, col %c\, Warning - %m'
-          \ }
-  endfunction
-
-  let g:neomake_purescript_syntax_maker = {
-    \ 'exe': 'pulp',
-    \ 'args': ['build --monochrome'],
-    \ 'errorformat': '%A at %f line %l\, column %c %m'
-    \ }
-  let g:neomake_purescript_enabled_makers = ['syntax']
-
+" Neomake -------------------------------------------------------------------{{{
+  " function! StrTrim(txt)
+  "   return substitute(a:txt, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
+  " endfunction
+  "
+  " let g:neomake_javascript_enabled_makers = []
+  "
+  " let g:flow_path = StrTrim(system('PATH=$(npm bin):$PATH && which flow'))
+  " let g:flow#enable = 0
+  "
+  " if findfile('.flowconfig', '.;') !=# ''
+  "   let g:flow_path = StrTrim(system('PATH=$(npm bin):$PATH && which flow'))
+  "   let g:flow#enable = 1
+  "   if g:flow_path != 'flow not found'
+  "     let g:neomake_javascript_flow_maker = {
+  "           \ 'exe': 'sh',
+  "           \ 'args': ['-c', g:flow_path.' --json 2> /dev/null | flow-vim-quickfix'],
+  "           \ 'errorformat': '%E%f:%l:%c\,%n: %m',
+  "           \ 'cwd': '%:p:h'
+  "           \ }
+  "     let g:neomake_javascript_enabled_makers = g:neomake_javascript_enabled_makers + [ 'flow']
+  "   endif
+  " endif
+  "
+  " let g:neomake_javascript_enabled_makers = g:neomake_javascript_enabled_makers + [ 'eslint']
+  " function! neomake#makers#ft#javascript#eslint()
+  "     return {
+  "         \ 'args': ['-f', 'compact'],
+  "         \ 'errorformat': '%E%f: line %l\, col %c\, Error - %m,' .
+  "         \ '%W%f: line %l\, col %c\, Warning - %m'
+  "         \ }
+  " endfunction
+  "
+  " let g:neomake_purescript_syntax_maker = {
+  "   \ 'exe': 'pulp',
+  "   \ 'args': ['build --monochrome'],
+  "   \ 'errorformat': '%A at %f line %l\, column %c %m'
+  "   \ }
+  " let g:neomake_purescript_enabled_makers = ['syntax']
+  "
   function! TSCPWD()
     return ['--project', getcwd()]
   endfunction
 
   " let g:neomake_open_list = 2
-
+  "
   function! neomake#makers#ft#typescript#EnabledMakers() abort
       return ['tsc', 'tslint']
   endfunction
@@ -627,12 +635,6 @@ endif
                   \ 'errorformat': '%f[%l\, %c]: %m'
                   \ }
   endfunction
-
-  let g:neomake_markdown_alex_maker = {
-    \ 'exe': 'alex',
-    \ 'errorformat': '%f: line %l\, col %c\, %m',
-    \ }
-  let g:neomake_markdown_enabled_makers = ['alex']
 
   autocmd! BufWritePost * Neomake
 "}}}
