@@ -11,95 +11,42 @@ set shell=sh
   set runtimepath+=/Users/willm/.config/nvim/repos/github.com/Shougo/dein.vim
   call dein#begin('/Users/willm/.config/nvim/')
   call dein#add('Shougo/dein.vim')
-
-  " syntax
-  call dein#add('sheerun/vim-polyglot')
-  call dein#add('mxw/vim-jsx')
-  call dein#add('pangloss/vim-javascript')
-  call dein#add('othree/yajs.vim', {'on_ft': 'javascript'})
-  call dein#add('othree/jsdoc-syntax.vim', {'on_ft':['javascript', 'typescript']})
-  call dein#add('othree/es.next.syntax.vim', {'on_ft': 'javascript'})
-  call dein#add('lambdatoast/elm.vim')
-  call dein#add('moll/vim-node')
-  call dein#add('othree/javascript-libraries-syntax.vim')
-  call dein#add('hail2u/vim-css3-syntax', {'on_ft':['css','scss']})
-  call dein#add('elzr/vim-json', {'on_ft': 'json'})
-  call dein#add('tpope/vim-markdown', {'on_ft': 'markdown'})
-  call dein#add('jtratner/vim-flavored-markdown', {'on_ft': 'markdown'})
-  call dein#add('suan/vim-instant-markdown', {'on_ft': 'markdown'})
-  call dein#add('HerringtonDarkholme/yats.vim')
-  call dein#add('alvan/vim-closetag')
-  "
-  " async stuff
-  call dein#add('Shougo/vimproc.vim', {'build' : 'make'})
-  "
-  " colorschemes
-  call dein#add('trusktr/seti.vim')
-  call dein#add('mhartington/oceanic-next')
-  call dein#add('vim-airline/vim-airline-themes')
   "
   " typescript stuff
-  call dein#add('HerringtonDarkholme/yats.vim')
-  call dein#add('mhartington/vim-typings')
   call dein#add('quramy/tsuquyomi')
   "
-  " purescript stuff
-  call dein#add('frigoeu/psc-ide-vim')
+  " syntax
+  call dein#add('Shougo/vimproc.vim', {'build' : 'make'})
+  call dein#add('leafgarland/typescript-vim')
   "
+  " colorschemes
+  call dein#add('effkay/argonaut.vim')
+  call dein#add('philpl/vim-adventurous')
+  call dein#add('mhartington/oceanic-next')
+  call dein#add('vim-airline/vim-airline-themes')
+  call dein#add('ianks/vim-tsx')
+  
   " system
-  call dein#add('Shougo/denite.nvim') " faster unite plugin
-  call dein#add('Shougo/unite.vim')
-  call dein#add('Shougo/unite-outline')
-  call dein#add('ujihisa/unite-colorscheme')
-  call dein#add('junkblocker/unite-codesearch')
-  call dein#add('rafi/vim-unite-issue')
-  call dein#add('mhartington/vim-folds') " folds for various languages
-  call dein#add('Konfekt/FastFold') " Only updates folds when needed
+  call dein#add('easymotion/vim-easymotion')
+  " call dein#add('tpope/vim-fugitive')
   call dein#add('Yggdroot/indentLine') " shows line intents
-  call dein#add('itmammoth/doorboy.vim') " autocloses brackets ([{}])
   call dein#add('valloric/MatchTagAlways', {'on_ft': ['html','javascript']}) " tag highglighting for html/jsx
-  call dein#add('majutsushi/tagbar') " shows file outlines
-  call dein#add('tpope/vim-fugitive') " Git commands
-  call dein#add('tpope/vim-rhubarb') " Github commands
-  call dein#add('jreybert/vimagit') " Git flow in vim
   call dein#add('airblade/vim-gitgutter') " Git markings in gutter
   call dein#add('tpope/vim-repeat') " Repeat plugin commands not just native
-  call dein#add('facebook/vim-flow', {'autoload': {'filetypes': 'javascript'}}) " flow typing
-  call dein#add('neomake/neomake') " Async commands for eslint/flow/etc
   call dein#add('editorconfig/editorconfig-vim')
   call dein#add('scrooloose/nerdtree') " Sidebar for file browsing
   call dein#add('Xuyuanp/nerdtree-git-plugin') " Git symbols for above
   call dein#add('tiagofumo/vim-nerdtree-syntax-highlight')
-  call dein#add('AndrewRadev/switch.vim') " Switches stuff = true -> false
   call dein#add('vim-airline/vim-airline') " Airline at the bottom
   call dein#add('tpope/vim-surround') " Surrounds true -> (true)
   call dein#add('tomtom/tcomment_vim') " comment lines, blocks
-  call dein#add('mattn/emmet-vim', {'on_ft': 'html'}) " emmet completions
   call dein#add('Chiel92/vim-autoformat')
-  call dein#add('ap/vim-css-color') " Highlights colour references, hex, css names
-  call dein#add('mhinz/vim-sayonara') " Closes buffers
-  call dein#add('mattn/webapi-vim')
-  call dein#add('mattn/gist-vim') " Posts current buffer to gist.github.com
   call dein#add('terryma/vim-multiple-cursors') " Multiple cursors are great
-  call dein#add('junegunn/goyo.vim') " Distraction free coding, like iA writer
   call dein#add('itchyny/vim-cursorword') " Underlines the word under cursor
-  call dein#add('rhysd/nyaovim-popup-tooltip') " Show images in a tooltip
   call dein#add('sbdchd/neoformat') " Allow formating
-  call dein#add('Numkil/ag.nvim') " Allow ag searching
   "
-  " deoplete stuff
-  call dein#add('Shougo/deoplete.nvim')
-  call dein#add('steelsojka/deoplete-flow')
-  call dein#add('carlitux/deoplete-ternjs')
-  " call dein#add('mhartington/deoplete-typescript')
-  call dein#add('Shougo/neco-vim', {'on_ft': 'vim'})
-  call dein#add('Shougo/neoinclude.vim')
-  "
-  " Snippets
-  call dein#add('Shougo/neosnippet.vim')
-  call dein#add('Shougo/neosnippet-snippets')
-  call dein#add('honza/vim-snippets')
-  call dein#add('heavenshell/vim-jsdoc')
+  " unite
+  " call dein#add('Shougo/unite.vim')
   "
   " final dein stuff
   if dein#check_install()
@@ -113,18 +60,8 @@ set shell=sh
 " System Settings  ----------------------------------------------------------{{{
   " Neovim Settings
   let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
-  " let $NVIM_PYTHON_LOG_FILE="nvimpy.log"
-  " let $NVIM_PYTHON_LOG_LEVEL='DEBUG'
-  " set clipboard+=unnamedplus
-
-  let g:switch_custom_definitions =
-    \ [
-    \ {
-    \   'it.only': 'it',
-    \   'it': 'it.only',
-    \ }
-    \ ]
   filetype plugin indent on
+  autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
 " Let airline tell me my status
   set noshowmode
   set noswapfile
@@ -141,40 +78,9 @@ set shell=sh
   set wildmode=full
   set undofile
   set undodir="$HOME/.VIM_UNDO_FILES"
-  autocmd BufWrite * :RemoveTrailingSpaces
-" Remember cursor position between vim sessions
-  autocmd BufReadPost *
-              \ if line("'\"") > 0 && line ("'\"") <= line("$") |
-              \   exe "normal! g'\"" |
-              \ endif
-" center buffer around cursor when opening files
-  autocmd BufRead * normal zz
-  let g:jsx_ext_required =1
   set complete=.,w,b,u,t,k
   let g:gitgutter_max_signs = 1000  " default value
-  autocmd InsertEnter * let save_cwd = getcwd() | set autochdir
-  autocmd InsertLeave * set noautochdir | execute 'cd' fnameescape(save_cwd)
   let g:indentLine_char='│'
-  " enable deoplete
-  let g:deoplete#enable_at_startup = 1
-
-  " let g:deoplete#enable_debug = 1
-  " let g:deoplete#enable_ignore_case = 1
-  " let g:deoplete#auto_complete_start_length = 0
-  " let g:auto_complete_start_length = 0
-  " let g:deoplete#enable_refresh_always = 1
-  " let g:deoplete#max_list = 1000
-  " let g:deoplete#enable_profile = 1
-  " call deoplete#enable_logging('DEBUG', 'tss.log')
-
-  " filenames like *.xml, *.html, *.xhtml, ...
-  " let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.js,*.jsx,*.ts,*.tsx"
-  let g:go_fmt_command = "goimports"
-  let g:table_mode_corner="|"
-
-  " let g:vimfiler_as_default_explorer = 1
-  " autocmd filetype vimfiler set nonumber norelativenumber
-  " let g:dein#install_progress_type = 'none'
 " }}}
 
 " System mappings  ----------------------------------------------------------{{{
@@ -199,6 +105,7 @@ set shell=sh
   nnoremap <leader>P "+P
   vnoremap <leader>p "+p
   vnoremap <leader>P "+P
+  map / <Plug>(easymotion-sn)
   "
   " Disable arrow keys!
   map <up> <nop>
@@ -260,21 +167,6 @@ set shell=sh
   map <esc> :noh<cr>
   tmap <esc> <c-\><c-n><esc><cr>
   "
-  " Something?
-  nnoremap <leader>e :call <SID>SynStack()<CR>
-  function! <SID>SynStack()
-    if !exists("*synstack")
-      return
-    endif
-    echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
-  endfunc
-  "
-  " If you prefer the Omni-Completion tip window to close when a selection is
-  " made, these lines close it on movement in insert mode or when leaving
-  " insert mode
-  autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
-  autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-  "
   " Highlight git changes
   nnoremap <leader>h :GitGutterLineHighlightsToggle<CR>
 "}}}"
@@ -297,7 +189,7 @@ set shell=sh
 
 " Themes, Commands, etc  ----------------------------------------------------{{{
   syntax enable
-  colorscheme OceanicNext
+  colorscheme adventurous
   "
   " For Neovim 0.1.3 and 0.1.4
   let $NVIM_TUI_ENABLE_TRUE_COLOR=1
@@ -393,138 +285,34 @@ set shell=sh
 
 " Snipppets -----------------------------------------------------------------{{{
   " Enable snipMate compatibility feature.
-  let g:neosnippet#enable_snipmate_compatibility = 1
-  let g:neosnippet#expand_word_boundary = 1
-  imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-  smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-  xmap <C-k>     <Plug>(neosnippet_expand_target)
+  " let g:neosnippet#enable_snipmate_compatibility = 1
+  " let g:neosnippet#expand_word_boundary = 1
+  " imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+  " smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+  " xmap <C-k>     <Plug>(neosnippet_expand_target)
   "
   " Tell Neosnippet about the other snippets
-  let g:neosnippet#snippets_directory='~/.config/repos/github.com/Shougo/neosnippet-snippets/neosnippets'
+  " let g:neosnippet#snippets_directory='~/.config/repos/github.com/Shougo/neosnippet-snippets/neosnippets'
   "
   " SuperTab like snippets behavior.
-  imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-  \ "\<Plug>(neosnippet_expand_or_jump)"
-  \: pumvisible() ? "\<C-n>" : "\<TAB>"
-  smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-  \ "\<Plug>(neosnippet_expand_or_jump)"
-  \: "\<TAB>"
+  " imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+  " \ "\<Plug>(neosnippet_expand_or_jump)"
+  " \: pumvisible() ? "\<C-n>" : "\<TAB>"
+  " smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+  " \ "\<Plug>(neosnippet_expand_or_jump)"
+  " \: "\<TAB>"
 
 "}}}
 
 " Javscript omni complete ---------------------------------------------------{{{
-  let g:vim_json_syntax_conceal = 0
   set splitbelow
   set completeopt+=noselect
-  " autocmd FileType typescript setlocal completeopt+=menu,preview
-	" set completeopt-=menu,preview
-  autocmd FileType vmailMessageList let b:deoplete_disable_auto_complete=1
   function! Multiple_cursors_before()
     let b:deoplete_disable_auto_complete=1
   endfunction
   function! Multiple_cursors_after()
     let b:deoplete_disable_auto_complete=0
   endfunction
-  call deoplete#custom#set('buffer', 'mark', 'buffer')
-  call deoplete#custom#set('ternjs', 'mark', '')
-  call deoplete#custom#set('omni', 'mark', 'omni')
-  call deoplete#custom#set('file', 'mark', 'file')
-  let g:deoplete#omni_patterns = {}
-  let g:deoplete#omni_patterns.html = ''
-"}}}
-
-" Emmet customization -------------------------------------------------------{{{
-  " Enable Emmet in all modes
-  " Remapping <C-y>, just doesn't cut it.
-  function! s:expand_html_tab()
-  " try to determine if we're within quotes or tags.
-  " if so, assume we're in an emmet fill area.
-   let line = getline('.')
-   if col('.') < len(line)
-     let line = matchstr(line, '[">][^<"]*\%'.col('.').'c[^>"]*[<"]')
-     if len(line) >= 2
-        return "\<C-n>"
-     endif
-   endif
-  " expand anything emmet thinks is expandable.
-  if emmet#isExpandable()
-    return "\<C-y>,"
-  endif
-  " return a regular tab character
-  return "\<tab>"
-  endfunction
-
-  autocmd FileType html,markdown imap <buffer><expr><tab> <sid>expand_html_tab()
-  let g:user_emmet_mode='a'
-  let g:user_emmet_complete_tag = 0
-  let g:user_emmet_install_global = 0
-  autocmd FileType html,css EmmetInstall
-"}}}
-
-" Unite ---------------------------------------------------------------------{{{
-  let g:unite_data_directory='~/.nvim/.cache/unite'
-  let g:unite_source_history_yank_enable=1
-  let g:unite_prompt='❯ '
-  let g:unite_source_rec_async_command =['ag', '--follow', '--nocolor', '--nogroup','--hidden', '-g', '', '--ignore', '.git', '--ignore', '*.png', '--ignore', 'lib']
-  " Search files by name
-  nnoremap <silent> <c-p> :Unite -auto-resize -start-insert -direction=botright file_rec/async<CR>
-  "
-  " Change colorschemes
-  nnoremap <silent> <leader>c :Unite -auto-resize -start-insert -direction=botright colorscheme<CR>
-  "
-  " Update plugins
-  nnoremap <silent> <leader>u :call dein#update()<CR>
-  "
-  " Open outline pane in right
-  nnoremap <silent> <leader>o :Unite -winwidth=45 -vertical -direction=botright outline<CR>
-  "
-  nnoremap <leader>I :Unite -no-split -vertical -direction=topleft issue:github:driftyco/
-  "
-  " Custom mappings for the unite buffer
-  autocmd FileType unite call s:unite_settings()
-  "
-  function! s:unite_settings() "{{{
-    " Enable navigation with control-j and control-k in insert mode
-    imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-    imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-  endfunction "}}}
-  "
-  " Git from unite ------------------------------------------------{{{
-  let g:unite_source_menu_menus = {} " Useful when building interfaces at appropriate places
-  let g:unite_source_menu_menus.git = {
-    \ 'description' : 'Fugitive interface',
-    \}
-  let g:unite_source_menu_menus.git.command_candidates = [
-    \[' git status', 'Gstatus'],
-    \[' git diff', 'Gvdiff'],
-    \[' git commit', 'Gcommit'],
-    \[' git stage/add', 'Gwrite'],
-    \[' git checkout', 'Gread'],
-    \[' git rm', 'Gremove'],
-    \[' git cd', 'Gcd'],
-    \[' git push', 'exe "Git! push " input("remote/branch: ")'],
-    \[' git pull', 'exe "Git! pull " input("remote/branch: ")'],
-    \[' git pull rebase', 'exe "Git! pull --rebase " input("branch: ")'],
-    \[' git checkout branch', 'exe "Git! checkout " input("branch: ")'],
-    \[' git fetch', 'Gfetch'],
-    \[' git merge', 'Gmerge'],
-    \[' git browse', 'Gbrowse'],
-    \[' git head', 'Gedit HEAD^'],
-    \[' git parent', 'edit %:h'],
-    \[' git log commit buffers', 'Glog --'],
-    \[' git log current file', 'Glog -- %'],
-    \[' git log last n commits', 'exe "Glog -" input("num: ")'],
-    \[' git log first n commits', 'exe "Glog --reverse -" input("num: ")'],
-    \[' git log until date', 'exe "Glog --until=" input("day: ")'],
-    \[' git log grep commits',  'exe "Glog --grep= " input("string: ")'],
-    \[' git log pickaxe',  'exe "Glog -S" input("string: ")'],
-    \[' git index', 'exe "Gedit " input("branchname\:filename: ")'],
-    \[' git mv', 'exe "Gmove " input("destination: ")'],
-    \[' git grep',  'exe "Ggrep " input("string: ")'],
-    \[' git prompt', 'exe "Git! " input("command: ")'],
-    \] " Append ' --' after log to get commit info commit buffers
-  nnoremap <silent> <Leader>g :Unite -direction=botright -silent -buffer-name=git -start-insert menu:git<CR>
-  "}}}
 "}}}
 
 " vim-airline ---------------------------------------------------------------{{{
@@ -535,7 +323,6 @@ set shell=sh
   let g:airline#extensions#tabline#show_tab_nr = 1
   let g:airline_theme='oceanicnext'
   let g:airline_powerline_fonts = 1
-  cnoreabbrev <expr> x getcmdtype() == ":" && getcmdline() == 'x' ? 'Sayonara' : 'x'
   tmap <leader>x <c-\><c-n>:bp! <BAR> bd! #<CR>
   nmap <leader>, :bnext<CR>
   tmap <leader>, <C-\><C-n>:bnext<cr>
@@ -562,82 +349,78 @@ set shell=sh
   nmap <leader>9 <Plug>AirlineSelectTab9
 "}}}
 
-" Neomake -------------------------------------------------------------------{{{
-  " function! StrTrim(txt)
-  "   return substitute(a:txt, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
-  " endfunction
-  "
-  " let g:neomake_javascript_enabled_makers = []
-  "
-  " let g:flow_path = StrTrim(system('PATH=$(npm bin):$PATH && which flow'))
-  " let g:flow#enable = 0
-  "
-  " if findfile('.flowconfig', '.;') !=# ''
-  "   let g:flow_path = StrTrim(system('PATH=$(npm bin):$PATH && which flow'))
-  "   let g:flow#enable = 1
-  "   if g:flow_path != 'flow not found'
-  "     let g:neomake_javascript_flow_maker = {
-  "           \ 'exe': 'sh',
-  "           \ 'args': ['-c', g:flow_path.' --json 2> /dev/null | flow-vim-quickfix'],
-  "           \ 'errorformat': '%E%f:%l:%c\,%n: %m',
-  "           \ 'cwd': '%:p:h'
-  "           \ }
-  "     let g:neomake_javascript_enabled_makers = g:neomake_javascript_enabled_makers + [ 'flow']
-  "   endif
-  " endif
-  "
-  " let g:neomake_javascript_enabled_makers = g:neomake_javascript_enabled_makers + [ 'eslint']
-  " function! neomake#makers#ft#javascript#eslint()
-  "     return {
-  "         \ 'args': ['-f', 'compact'],
-  "         \ 'errorformat': '%E%f: line %l\, col %c\, Error - %m,' .
-  "         \ '%W%f: line %l\, col %c\, Warning - %m'
-  "         \ }
-  " endfunction
-  "
-  " let g:neomake_purescript_syntax_maker = {
-  "   \ 'exe': 'pulp',
-  "   \ 'args': ['build --monochrome'],
-  "   \ 'errorformat': '%A at %f line %l\, column %c %m'
-  "   \ }
-  " let g:neomake_purescript_enabled_makers = ['syntax']
-  "
-  function! TSCPWD()
-    return ['--project', getcwd()]
-  endfunction
-
-  " let g:neomake_open_list = 2
-  "
-  function! neomake#makers#ft#typescript#EnabledMakers() abort
-      return ['tsc', 'tslint']
-  endfunction
-
-  function! neomake#makers#ft#typescript#tsc() abort
-      " tsc should not be passed a single file.  Changing to the file's dir will
-      " make it look upwards for a tsconfig.json file.
-      return {
-                  \ 'args': ['--noEmit'],
-                  \ 'append_file': 0,
-                  \ 'cwd': '%:p:h',
-                  \ 'errorformat':
-                  \ '%E%f %#(%l\,%c): error %m,' .
-                  \ '%E%f %#(%l\,%c): %m,' .
-                  \ '%Eerror %m,' .
-                  \ '%C%\s%\+%m'
-                  \ }
-  endfunction
-
-  function! neomake#makers#ft#typescript#tslint() abort
-      return {
-                  \ 'args': [
-                  \ '%:p', '--format verbose'
-                  \ ],
-                  \ 'errorformat': '%f[%l\, %c]: %m'
-                  \ }
-  endfunction
-
-  autocmd! BufWritePost * Neomake
+" Unite ---------------------------------------------------------------------{{{
+  " let g:unite_data_directory='~/.nvim/.cache/unite'
+  " let g:unite_source_history_yank_enable=1
+  " let g:unite_prompt='❯ '
+  " let g:unite_source_rec_async_command =['ag', '--follow', '--nocolor', '--nogroup','--hidden', '-g', '', '--ignore', '.git', '--ignore', '*.png', '--ignore', 'lib']
+  " " Search files by name
+  " nnoremap <silent> <c-p> :Unite -auto-resize -direction=botright file_rec/async<CR>
+  " "
+  " " Change colorschemes
+  " nnoremap <silent> <leader>c :Unite -auto-resize -start-insert -direction=botright colorscheme<CR>
+  " "
+  " " Grep
+  " let g:unite_source_grep_command = 'ag'
+  " nnoremap <silent> <leader>i :Unite -auto-resize -direction=botright grep/git<CR>
+  " " 
+  " " Go between buffers
+  " nnoremap <silent> <leader>b :Unite -auto-resize -start-insert -direction=botright buffer<CR>
+  " "
+  " " Update plugins
+  " nnoremap <silent> <leader>u :call dein#update()<CR>
+  " "
+  " " Open outline pane in right
+  " nnoremap <silent> <leader>o :Unite -winwidth=45 -vertical -direction=botright outline<CR>
+  " "
+  " nnoremap <leader>I :Unite -no-split -vertical -direction=topleft issue:github:driftyco/
+  " "
+  " " Custom mappings for the unite buffer
+  " autocmd FileType unite call s:unite_settings()
+  " "
+  " function! s:unite_settings() "{{{
+  "   " Enable navigation with control-j and control-k in insert mode
+  "   imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+  "   imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+  " endfunction "}}}
+  " "
+  " " Git from unite ------------------------------------------------{{{
+  " let g:unite_source_menu_menus = {} " Useful when building interfaces at appropriate places
+  " let g:unite_source_menu_menus.git = {
+  "   \ 'description' : 'Fugitive interface',
+  "   \}
+  " let g:unite_source_menu_menus.git.command_candidates = [
+  "   \[' git status', 'Gstatus'],
+  "   \[' git diff', 'Gvdiff'],
+  "   \[' git commit', 'Gcommit'],
+  "   \[' git stage/add', 'Gwrite'],
+  "   \[' git checkout', 'Gread'],
+  "   \[' git rm', 'Gremove'],
+  "   \[' git cd', 'Gcd'],
+  "   \[' git push', 'exe "Git! push " input("remote/branch: ")'],
+  "   \[' git pull', 'exe "Git! pull " input("remote/branch: ")'],
+  "   \[' git pull rebase', 'exe "Git! pull --rebase " input("branch: ")'],
+  "   \[' git checkout branch', 'exe "Git! checkout " input("branch: ")'],
+  "   \[' git fetch', 'Gfetch'],
+  "   \[' git merge', 'Gmerge'],
+  "   \[' git browse', 'Gbrowse'],
+  "   \[' git head', 'Gedit HEAD^'],
+  "   \[' git parent', 'edit %:h'],
+  "   \[' git log commit buffers', 'Glog --'],
+  "   \[' git log current file', 'Glog -- %'],
+  "   \[' git log last n commits', 'exe "Glog -" input("num: ")'],
+  "   \[' git log first n commits', 'exe "Glog --reverse -" input("num: ")'],
+  "   \[' git log until date', 'exe "Glog --until=" input("day: ")'],
+  "   \[' git log grep commits',  'exe "Glog --grep= " input("string: ")'],
+  "   \[' git log pickaxe',  'exe "Glog -S" input("string: ")'],
+  "   \[' git index', 'exe "Gedit " input("branchname\:filename: ")'],
+  "   \[' git mv', 'exe "Gmove " input("destination: ")'],
+  "   \[' git grep',  'exe "Ggrep " input("string: ")'],
+  "   \[' git prompt', 'exe "Git! " input("command: ")'],
+  "   \] " Append ' --' after log to get commit info commit buffers
+  " nnoremap <silent> <Leader>g :Unite -direction=botright -silent -buffer-name=git -start-insert menu:git<CR>
+  " "}}}
 "}}}
-"
+
 " set colorscheme again
-colorscheme OceanicNext
+colorscheme adventurous
