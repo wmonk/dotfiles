@@ -78,8 +78,8 @@ end
 alias vpn='sudo -p "sudo password: " openconnect -g SKY-MINI-TOKEN -u $LOGNAME -m 1000 https://skyremoteaccess.bskyb.com'
 alias lll='ls -1 | less'
 
-function fish_mode_prompt
-end
+#function fish_mode_prompt
+#end
 
 function fishy_vi_prompt
 if set -q __fish_vi_mode
@@ -157,6 +157,10 @@ function gh --description 'Open the webpage for the current github repo/branch'
         return 3
     end
 
+    if [ (string match (git remote -v | awk '{ print $2 }') 'https' = 'https') ]
+        open (git remote -v | awk '{ print $2 }')
+    end
+
     set -l branch (command git rev-parse --abbrev-ref HEAD)
 
     if [ $branch = 'HEAD' ]
@@ -169,4 +173,11 @@ function gh --description 'Open the webpage for the current github repo/branch'
     open "http://$url/$argv"
 end
 
-#test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish
+alias nr="npm run"
+alias nrb="npm run build"
+alias nrs="npm run start"
+alias nrsb="npm run storybook"
+alias nr="npm run"
+alias vimconfig="nvim ~/.config/nvim/ts.vim"
+
+test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish

@@ -19,6 +19,8 @@ alias gl='git pull'
 alias gpr='git pull --rebase'
 alias gpp='git pull; git push'
 alias gup='git fetch; git rebase'
+alias grc='git rebase --continue'
+alias grom='git rebase origin/master'
 alias gp='git push'
 alias gpo='git push origin'
 alias gpu='git push --set-upstream'
@@ -56,3 +58,4 @@ alias gcaa="git commit -a --amend -C HEAD"
 alias ggui="git gui"
 
 alias gd="git diff"
+alias gds="git diff --staged"
