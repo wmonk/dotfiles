@@ -37340,11 +37340,11 @@
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>530 494 620 392 0 0 1680 1050 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>-978 1406 918 495 -1080 476 1080 1920 </string>
+	<string>86 251 796 473 0 0 1680 1050 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
-	<string>-1023 1789 592 584 -1080 476 1080 1897 </string>
+	<string>155 1373 592 584 0 900 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>-1080 476 650 402 -1080 476 1080 1897 </string>
+	<string>-1080 476 1080 1897 -1080 476 1080 1897 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -41311,7 +41311,7 @@
 	<key>NoSyncInstallationId</key>
 	<string>C8DB498C-36FF-4C8D-97B2-F7E940A26A92</string>
 	<key>NoSyncLastTipTime</key>
-	<real>503422356.97385198</real>
+	<real>504095921.10497099</real>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -41366,7 +41366,16 @@
 		<string>0036</string>
 		<string>0037</string>
 		<string>0038</string>
+		<string>0039</string>
+		<string>0040</string>
+		<string>0041</string>
+		<string>0042</string>
+		<string>0043</string>
+		<string>0044</string>
+		<string>0045</string>
 	</array>
+	<key>NoSyncTurnOffMouseReportingOnHostChange</key>
+	<false/>
 	<key>OnlyWhenMoreTabs</key>
 	<true/>
 	<key>OpenArrangementAtStartup</key>
@@ -41437,7 +41446,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2016-12-15T13:48:27Z</date>
+	<date>2016-12-21T16:38:48Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SavePasteHistory</key>
