@@ -16,6 +16,9 @@ set shell=sh
   " syntax
   Plug 'Shougo/vimproc.vim', {'build' : 'make'}
   Plug 'leafgarland/typescript-vim'
+  Plug 'w0rp/ale'
+  Plug 'flowtype/vim-flow'
+  Plug 'ElmCast/elm-vim'
   "
   " colorschemes
   Plug 'effkay/argonaut.vim'
@@ -44,8 +47,8 @@ set shell=sh
   Plug 'sbdchd/neoformat' " Allow formating
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   "
-  " unite
-  Plug 'Shougo/unite.vim'
+  " fzf
+  Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
   "
   " snippets
   Plug 'Shougo/neosnippet.vim'
@@ -157,7 +160,7 @@ set shell=sh
   "
   " Delete and stay in prev position
   nnoremap <leader>d "_d
-  vnoremap <leader>d "_d
+  vnoremap leader>d "_d
   "
   " Comment out line(s)
   vnoremap <c-/> :TComment<cr>
@@ -349,42 +352,28 @@ set shell=sh
   nmap <leader>9 <Plug>AirlineSelectTab9
 "}}}
 
-" Unite ---------------------------------------------------------------------{{{
-  let g:unite_data_directory='~/.nvim/.cache/unite'
-  let g:unite_source_history_yank_enable=1
-  let g:unite_prompt='❯ '
-  let g:unite_source_rec_async_command =['ag', '--follow', '--nocolor', '--nogroup','--hidden', '-g', '', '--ignore', '.git', '--ignore', '*.png', '--ignore', 'lib']
-  " Search files by name
-  nnoremap <silent> <c-p> :Unite -auto-resize -direction=botright file_rec/async<CR>
-  "
-  " Change colorschemes
-  nnoremap <silent> <leader>c :Unite -auto-resize -start-insert -direction=botright colorscheme<CR>
-  "
-  " Grep
-  let g:unite_source_grep_command = 'ag'
-  nnoremap <silent> <leader>i :Unite -auto-resize -direction=botright grep/git<CR>
-  " 
-  " Go between buffers
-  nnoremap <silent> <leader>b :Unite -auto-resize -start-insert -direction=botright buffer<CR>
-  "
-  " Update plugins
-  nnoremap <silent> <leader>u :PlugUpdate<CR>
-  "
-  " Open outline pane in right
-  nnoremap <silent> <leader>o :Unite -winwidth=45 -vertical -direction=botright outline<CR>
-  "
-  nnoremap <leader>I :Unite -no-split -vertical -direction=topleft issue:github:driftyco/
-  "
-  " Custom mappings for the unite buffer
-  autocmd FileType unite call s:unite_settings()
-  "
-  function! s:unite_settings() "{{{
-    " Enable navigation with control-j and control-k in insert mode
-    imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-    imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-  endfunction "}}}
-  "}}}
-"}}}
+" fzf ----------------------------------------------------------------------- {{{
+  map <C-P> :GFiles<CR>
+  function! Agerium()
+    let params = input('Search files for: ')
+    execute 'Ag ' . params
+  endfunction
+  map <Leader>i :call Agerium()<CR>
+  map <Leader>g :GFiles?<CR>
+  map <Leader>b :Buffers<CR>
+
+" }}}
+
+
+" Allows you to visually select a section and then hit @ to run a macro on all lines
+" https://medium.com/@schtoeffel/you-don-t-need-more-than-one-cursor-in-vim-2c44117d51db#.3dcn9prw6
+xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
+" Executes a macro for each line in visual selection
+function! ExecuteMacroOverVisualRange()
+  echo "@".getcmdline()
+  execute ":'<,'>normal @".nr2char(getchar())
+endfunction
 
 " set colorscheme again
 colorscheme adventurous
+
