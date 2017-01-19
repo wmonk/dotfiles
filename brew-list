@@ -2,8 +2,11 @@ autoconf
 automake
 cmake
 ctags
+elm-format
 fish
 flow
+fswatch
+fzf
 gdbm
 gettext
 jq
@@ -31,4 +34,5 @@ sqlite
 the_silver_searcher
 unibilium
 vim
+watchman
 xz
