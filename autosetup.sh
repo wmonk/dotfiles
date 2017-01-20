@@ -17,7 +17,6 @@ echo ""
 echo -e "\033[1m\033[34m==> Installing global npm dependencies\033[0m"
 npm i -g reload create-react-app yarn supervisor 
 
-
 echo ""
 echo -e "\033[1m\033[34m==> Adding cask alternatives\033[0m"
 brew tap caskroom/versions
@@ -26,3 +25,5 @@ echo ""
 echo -e "\033[1m\033[34m==> Installing cask dependencies\033[0m"
 brew cask install iterm2-nightly
 
+echo $(which fish) >> /etc/shells
+chsh -s $(which fish)
