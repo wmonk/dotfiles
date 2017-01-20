@@ -1,4 +1,4 @@
-" vim: set ts=2 sw=2
+" vim:ts=2:sw=2
 
 " Use sh shell so that git works in the NerdTree buffer
 set shell=sh
@@ -19,6 +19,8 @@ set shell=sh
   Plug 'w0rp/ale'
   Plug 'flowtype/vim-flow'
   Plug 'ElmCast/elm-vim'
+  Plug 'mustache/vim-mustache-handlebars'
+  Plug 'plasticboy/vim-markdown'
   "
   " colorschemes
   Plug 'effkay/argonaut.vim'
@@ -255,8 +257,8 @@ set shell=sh
 " NERDTree ------------------------------------------------------------------{{{
   "
   " Auto open nerdtree if no file opened
-  autocmd StdinReadPre * let s:std_in=1
-  autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+  " autocmd StdinReadPre * let s:std_in=1
+  " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | FZF | endif
   map - :NERDTreeToggle<CR> " Toggle nerdtree
   map <C-\> :NERDTreeFind<CR> " Open current file in nerdtree
   autocmd StdinReadPre * let s:std_in=1
@@ -352,7 +354,7 @@ set shell=sh
   nmap <leader>9 <Plug>AirlineSelectTab9
 "}}}
 
-" fzf ----------------------------------------------------------------------- {{{
+" fzf ---------------------------------------------------------------------- {{{
   map <C-P> :GFiles<CR>
   function! Agerium()
     let params = input('Search files for: ')
@@ -364,6 +366,10 @@ set shell=sh
 
 " }}}
 
+" ale -----------------------------------------------------------------------{{{
+  nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+  nmap <silent> <C-j> <Plug>(ale_next_wrap)
+" }}}
 
 " Allows you to visually select a section and then hit @ to run a macro on all lines
 " https://medium.com/@schtoeffel/you-don-t-need-more-than-one-cursor-in-vim-2c44117d51db#.3dcn9prw6
@@ -374,6 +380,27 @@ function! ExecuteMacroOverVisualRange()
   execute ":'<,'>normal @".nr2char(getchar())
 endfunction
 
+au FileType qf call AdjustWindowHeight(3, 10)
+function! AdjustWindowHeight(minheight, maxheight)
+  exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
+endfunction
+
+function InsertIfEmpty()
+  if @% == ""
+    " No filename for current buffer
+    FZF
+  elseif filereadable(@%) == 0
+    " File doesn't exist yet
+    startinsert
+  elseif line('$') == 1 && col('$') == 1
+    " File is empty
+    startinsert
+  endif
+endfunction
+
+au VimEnter * call InsertIfEmpty()
+
 " set colorscheme again
 colorscheme adventurous
+
 

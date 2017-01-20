@@ -173,11 +173,17 @@ function gh --description 'Open the webpage for the current github repo/branch'
     open "http://$url/$argv"
 end
 
-alias nr="npm run"
-alias nrb="npm run build"
-alias nrs="npm run start"
-alias nrsb="npm run storybook"
-alias nr="npm run"
 alias vimconfig="nvim ~/.config/nvim/ts.vim"
+#alias npm="npm -s"
 
 test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish
+
+function vf
+  set files (locate -Ai -0 $argv | grep -z -vE '~$' | fzf --read0 -0 -1 -m)
+
+  if [[ -n $files ]]
+     vim -- $files
+     print -l $files[1]
+  end
+end
+
