@@ -15,7 +15,7 @@ brew install $(cat ./brew-list)
 
 echo ""
 echo -e "\033[1m\033[34m==> Installing global npm dependencies\033[0m"
-npm i -g $(cat ./npm-list)
+npm i -g reload create-react-app yarn supervisor 
 
 echo ""
 echo -e "\033[1m\033[34m==> Installing cask dependencies\033[0m"
