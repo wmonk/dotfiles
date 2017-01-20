@@ -23,7 +23,19 @@ brew tap caskroom/versions
 
 echo ""
 echo -e "\033[1m\033[34m==> Installing cask dependencies\033[0m"
-brew cask install iterm2-nightly
+brew cask install iterm2-nightly slack-beta
+
+echo ""
+echo -e "\033[1m\033[34m==> Installing vim plug\033[0m"
+curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 echo $(which fish) >> /etc/shells
 chsh -s $(which fish)
+
+osascript -e "tell application \"iTerm2\"\n
+tell current session of current window\n
+split horizontall with default profile\n
+close\n
+  end tell\n
+end tell"
