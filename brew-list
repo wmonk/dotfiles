@@ -16,7 +16,7 @@ libuv
 libvterm
 libyaml
 msgpack
-neovim
+neovim/neovim/neovim
 nginx
 node
 oniguruma
