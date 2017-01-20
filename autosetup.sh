@@ -19,5 +19,5 @@ npm i -g $(cat ./npm-list)
 
 echo ""
 echo -e "\033[1m\033[34m==> Installing cask dependencies\033[0m"
-brew cask install iterm2
+brew cask install iterm2-nightly
 
