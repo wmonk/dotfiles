@@ -121,7 +121,7 @@ function fish_prompt
 
     if echo "$PWD" | grep -q -E 'vmcode|skybetdev'
         set_color normal
-        echo " → "
+        echo " =>"
         return
     end
 
@@ -135,7 +135,7 @@ function fish_prompt
 
     echo (__fish_git_prompt)
     set_color normal
-    echo -e '→ '
+    echo -e '=> '
 end
 
 function gh --description 'Open the webpage for the current github repo/branch'

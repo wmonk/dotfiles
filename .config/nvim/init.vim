@@ -52,6 +52,7 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   Plug 'itchyny/vim-cursorword' " Underlines the word under cursor
   Plug 'sbdchd/neoformat' " Allow formating
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'dhruvasagar/vim-markify'
   "
   " fzf
   Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
@@ -409,6 +410,8 @@ let g:formatters_javascript = ['js_prettier']
 
 let g:formatdef_elm_format = '"elm-format --stdin"'
 let g:formatters_elm = ['elm_format']
+
+let g:tsuquyomi_single_quote_import=1
 
 " set colorscheme again
 colorscheme adventurous
