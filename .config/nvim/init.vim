@@ -2,6 +2,7 @@
 
 " Use sh shell so that git works in the NerdTree buffer
 set shell=sh
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 
 " Setup plugins ------------------------------------------------------------{{{
   if &compatible
@@ -21,6 +22,8 @@ set shell=sh
   Plug 'ElmCast/elm-vim'
   Plug 'mustache/vim-mustache-handlebars'
   Plug 'plasticboy/vim-markdown'
+  Plug 'elixir-lang/vim-elixir'
+  Plug 'avdgaag/vim-phoenix'
   "
   " colorschemes
   Plug 'effkay/argonaut.vim'
@@ -28,6 +31,7 @@ set shell=sh
   Plug 'mhartington/oceanic-next'
   Plug 'vim-airline/vim-airline-themes'
   Plug 'ianks/vim-tsx'
+  Plug 'morhetz/gruvbox'
   
   " system
   Plug 'easymotion/vim-easymotion'
@@ -399,6 +403,12 @@ function InsertIfEmpty()
 endfunction
 
 au VimEnter * call InsertIfEmpty()
+
+let g:formatdef_js_prettier= '"prettier --stdin"'
+let g:formatters_javascript = ['js_prettier']
+
+let g:formatdef_elm_format = '"elm-format --stdin"'
+let g:formatters_elm = ['elm_format']
 
 " set colorscheme again
 colorscheme adventurous
