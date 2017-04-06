@@ -53,6 +53,8 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   Plug 'sbdchd/neoformat' " Allow formating
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'dhruvasagar/vim-markify'
+  Plug 'jiangmiao/auto-pairs'
+  Plug 'kshenoy/vim-signature'
   "
   " fzf
   Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
@@ -192,13 +194,13 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   " let g:tsuquyomi_single_quote_import=1
   " let g:tsuquyomi_disable_quickfix = 1
   autocmd FileType typescript setlocal completeopt+=preview
-  nmap <buffer> <Leader>t : <C-u>echo tsuquyomi#hint()<CR>
   autocmd FileType typescript nmap <buffer> <Leader>T : <C-u>echo tsuquyomi#hint()<CR>
 " }}}
 
 " Themes, Commands, etc  ----------------------------------------------------{{{
   syntax enable
-  colorscheme adventurous
+  colorscheme gruvbox
+  let g:gruvbox_contrast_dark="hard"
   "
   " For Neovim 0.1.3 and 0.1.4
   let $NVIM_TUI_ENABLE_TRUE_COLOR=1
@@ -249,7 +251,7 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 
   autocmd FileType html setlocal fdl=99
 
-  autocmd FileType javascript,html,css,scss,typescript setlocal foldlevel=99
+  autocmd FileType javascript,html,css,scss,typescript setlocal foldlevel=3
   autocmd FileType css,scss,json setlocal foldmethod=marker
   autocmd FileType css,scss,json setlocal foldmarker={,}
 
@@ -331,7 +333,7 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   set hidden
   let g:airline#extensions#tabline#fnamemod = ':t'
   let g:airline#extensions#tabline#show_tab_nr = 1
-  let g:airline_theme='oceanicnext'
+  let g:airline_theme='gruvbox'
   let g:airline_powerline_fonts = 1
   tmap <leader>x <c-\><c-n>:bp! <BAR> bd! #<CR>
   nmap <leader>, :bnext<CR>
@@ -360,7 +362,7 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 "}}}
 
 " fzf ---------------------------------------------------------------------- {{{
-  map <C-P> :GFiles<CR>
+  map <C-P> :FZF<CR>
   function! Agerium()
     let params = input('Search files for: ')
     execute 'Ag ' . params
@@ -413,7 +415,5 @@ let g:formatters_elm = ['elm_format']
 
 let g:tsuquyomi_single_quote_import=1
 
-" set colorscheme again
-colorscheme adventurous
-
+inoremap <Leader><Leader>p console.log(<C-R>");<esc>
 

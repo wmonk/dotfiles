@@ -23,7 +23,7 @@ brew tap caskroom/versions
 
 echo ""
 echo -e "\033[1m\033[34m==> Installing cask dependencies\033[0m"
-brew cask install iterm2-nightly slack-beta alfred
+brew cask install iterm2-nightly slack-beta alfred jitouch kap
 
 echo ""
 echo -e "\033[1m\033[34m==> Installing vim plug\033[0m"
