@@ -51,7 +51,6 @@ end
 
 # nodejs
 set -x NODE_PATH "$HOME/.npm-packages/lib/node_modules" $NODE_PATH
-set -x PATH "$HOME/.npm-packages/bin" $PATH
 set -x PATH "./node_modules/.bin" $PATH
 set -x PATH "/usr/local/sbin" $PATH
 

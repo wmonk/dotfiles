@@ -23,7 +23,9 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   Plug 'mustache/vim-mustache-handlebars'
   Plug 'plasticboy/vim-markdown'
   Plug 'elixir-lang/vim-elixir'
+  Plug 'slashmili/alchemist.vim'
   Plug 'avdgaag/vim-phoenix'
+  Plug 'Quramy/vim-js-pretty-template'
   "
   " colorschemes
   Plug 'effkay/argonaut.vim'
@@ -40,6 +42,7 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   Plug 'valloric/MatchTagAlways', {'on_ft': ['html','javascript']} " tag highglighting for html/jsx
   Plug 'airblade/vim-gitgutter' " Git markings in gutter
   Plug 'tpope/vim-repeat' " Repeat plugin commands not just native
+  Plug 'tpope/vim-abolish' " Change cases and ting
   Plug 'editorconfig/editorconfig-vim'
   Plug 'scrooloose/nerdtree' " Sidebar for file browsing
   Plug 'Xuyuanp/nerdtree-git-plugin' " Git symbols for above
@@ -55,6 +58,7 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   Plug 'dhruvasagar/vim-markify'
   Plug 'jiangmiao/auto-pairs'
   Plug 'kshenoy/vim-signature'
+  Plug 'alvan/vim-closetag'
   "
   " fzf
   Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
@@ -104,6 +108,8 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   " Make it so that a curly brace automatically inserts an indented line
   inoremap {<CR> {<CR>}<Esc>O<BS><Tab>
   "
+  " Quickly exit insert mode and save
+  imap jk <Esc>:w<CR>
   " Quickly exit insert mode
   imap jk <Esc>
   "
@@ -195,6 +201,15 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   " let g:tsuquyomi_disable_quickfix = 1
   autocmd FileType typescript setlocal completeopt+=preview
   autocmd FileType typescript nmap <buffer> <Leader>T : <C-u>echo tsuquyomi#hint()<CR>
+" }}}
+
+" Flow -----------------------------------------------------------------{{{
+  "
+  " Hint flow
+  autocmd FileType javascript nmap <buffer> <Leader>T : FlowType<CR>
+  "
+  " Got to definition
+  map <Leader>d : FlowJumpToDef<CR>
 " }}}
 
 " Themes, Commands, etc  ----------------------------------------------------{{{
@@ -362,7 +377,8 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 "}}}
 
 " fzf ---------------------------------------------------------------------- {{{
-  map <C-P> :FZF<CR>
+  map <C-A> :FZF<CR>
+  map <C-p> :GFiles<CR>
   function! Agerium()
     let params = input('Search files for: ')
     execute 'Ag ' . params
@@ -415,5 +431,16 @@ let g:formatters_elm = ['elm_format']
 
 let g:tsuquyomi_single_quote_import=1
 
-inoremap <Leader><Leader>p console.log(<C-R>");<esc>
+inoremap <Leader><Leader>p <C-R>"<esc>
+let g:gruvbox_contrast_dark = "hard"
+
+let g:ale_linters = { 'elixir': [] }
+
+function FormatJSON(...) 
+  execute "%! node -e 'process.stdin.on(\"data\", data => console.log(JSON.stringify(eval(`data = ${data.toString()}`), null, 4)))"
+endfunction
+
+nmap fj :<C-U>call FormatJSON(v:count)<CR>
+
+let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.js,*.jsx"
 
