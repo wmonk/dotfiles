@@ -3,99 +3,81 @@
 " Use sh shell so that git works in the NerdTree buffer
 set shell=sh
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+set termguicolors
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·,eol:⨼
 
-" Setup plugins ------------------------------------------------------------{{{
+" Setup plugins ------------------------------------------------------------{{{{{{}}}{{{}}}
   if &compatible
     set nocompatible
   endif
 
   call plug#begin('~/.vim/plugged')
   "
-  " typescript stuff
-  Plug 'quramy/tsuquyomi'
   "
   " syntax
+  Plug 'kenwheeler/glow-in-the-dark-gucci-shark-bites-vim'
   Plug 'Shougo/vimproc.vim', {'build' : 'make'}
-  Plug 'leafgarland/typescript-vim'
   Plug 'w0rp/ale'
   Plug 'flowtype/vim-flow'
   Plug 'ElmCast/elm-vim'
-  Plug 'mustache/vim-mustache-handlebars'
-  Plug 'plasticboy/vim-markdown'
-  Plug 'elixir-lang/vim-elixir'
-  Plug 'slashmili/alchemist.vim'
-  Plug 'avdgaag/vim-phoenix'
+  Plug 'ap/vim-buftabline'
   Plug 'Quramy/vim-js-pretty-template'
+  Plug 'wavded/vim-stylus'
+  Plug 'moll/vim-node'
+  Plug 'othree/yajs.vim'
+  Plug 'mxw/vim-jsx'
+  Plug 'christoomey/vim-tmux-navigator'
+  Plug 'MaxMEllon/vim-jsx-pretty'
   "
   " colorschemes
-  Plug 'effkay/argonaut.vim'
-  Plug 'philpl/vim-adventurous'
-  Plug 'mhartington/oceanic-next'
-  Plug 'vim-airline/vim-airline-themes'
-  Plug 'ianks/vim-tsx'
   Plug 'morhetz/gruvbox'
-  
+  "
   " system
   Plug 'easymotion/vim-easymotion'
   Plug 'tpope/vim-fugitive'
-  Plug 'Yggdroot/indentLine' " shows line intents
   Plug 'valloric/MatchTagAlways', {'on_ft': ['html','javascript']} " tag highglighting for html/jsx
   Plug 'airblade/vim-gitgutter' " Git markings in gutter
   Plug 'tpope/vim-repeat' " Repeat plugin commands not just native
-  Plug 'tpope/vim-abolish' " Change cases and ting
   Plug 'editorconfig/editorconfig-vim'
   Plug 'scrooloose/nerdtree' " Sidebar for file browsing
   Plug 'Xuyuanp/nerdtree-git-plugin' " Git symbols for above
   Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-  Plug 'vim-airline/vim-airline' " Airline at the bottom
   Plug 'tpope/vim-surround' " Surrounds true -> (true)
   Plug 'tomtom/tcomment_vim' " comment lines, blocks
   Plug 'Chiel92/vim-autoformat'
   Plug 'terryma/vim-multiple-cursors' " Multiple cursors are great
   Plug 'itchyny/vim-cursorword' " Underlines the word under cursor
-  Plug 'sbdchd/neoformat' " Allow formating
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  Plug 'dhruvasagar/vim-markify'
+  Plug 'Valloric/YouCompleteMe'
   Plug 'jiangmiao/auto-pairs'
   Plug 'kshenoy/vim-signature'
   Plug 'alvan/vim-closetag'
+  Plug 'chrisbra/Colorizer' " Highlight hex colors
   "
   " fzf
   Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
   "
   " snippets
-  Plug 'Shougo/neosnippet.vim'
-  Plug 'Shougo/neosnippet-snippets'
-  Plug 'honza/vim-snippets'
-  Plug 'heavenshell/vim-jsdoc'
+  Plug 'epilande/vim-es2015-snippets'
+  Plug 'epilande/vim-react-snippets'
+  Plug 'alexbyk/vim-ultisnips-js-testing'
+  Plug 'SirVer/ultisnips'
+
   "
   call plug#end()
 " }}}
 
 " System Settings  ----------------------------------------------------------{{{
-  " Neovim Settings
-  let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
   filetype plugin indent on
-  autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
-" Let airline tell me my status
   set noshowmode
   set noswapfile
   filetype on
-  set relativenumber number
-  set tabstop=4 shiftwidth=4 expandtab
-  set conceallevel=0
-" block select not limited by shortest line
-  set virtualedit=
-  set wildmenu
-  set laststatus=2
-  set colorcolumn=100
+  set number
   set wrap linebreak nolist
-  set wildmode=full
   set undofile
   set undodir="$HOME/.VIM_UNDO_FILES"
   set complete=.,w,b,u,t,k
   let g:gitgutter_max_signs = 1000  " default value
-  let g:indentLine_char='│'
 " }}}
 
 " System mappings  ----------------------------------------------------------{{{
@@ -105,8 +87,6 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   map <Leader>q :x<CR>
   map <Leader>w :w<CR>
   "
-  " Make it so that a curly brace automatically inserts an indented line
-  inoremap {<CR> {<CR>}<Esc>O<BS><Tab>
   "
   " Quickly exit insert mode and save
   imap jk <Esc>:w<CR>
@@ -127,8 +107,6 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   " Disable arrow keys!
   map <up> <nop>
   map <down> <nop>
-  map <left> <nop>
-  map <right> <nop>
   "
   " Quick switching between splits
   map <C-h> <C-w>h
@@ -140,8 +118,8 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   nnoremap Q <nop>
   "
   " Navigate between display lines
-  noremap  <silent> k gk
-  noremap  <silent> j gj
+  " noremap  <silent> k gk
+  " noremap  <silent> j gj
   "
   " copy current files path to clipboard
   nmap cp :let @+ = expand("%") <cr>
@@ -175,7 +153,7 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   "
   " Delete and stay in prev position
   nnoremap <leader>d "_d
-  vnoremap leader>d "_d
+  vnoremap <leader>d "_d
   "
   " Comment out line(s)
   vnoremap <c-/> :TComment<cr>
@@ -188,28 +166,14 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   nnoremap <leader>h :GitGutterLineHighlightsToggle<CR>
 "}}}"
 
-" Tsuquyomi -----------------------------------------------------------------{{{
-  "
-  " Hint typescript
-  autocmd FileType typescript nmap <buffer> <Leader>T : <C-u>echo tsuquyomi#hint()<CR>
-  "
-  " Got to definition
-  map <Leader>d <Plug>(TsuquyomiDefinition)
-  "
-  " Use single quotes for imports
-  " let g:tsuquyomi_single_quote_import=1
-  " let g:tsuquyomi_disable_quickfix = 1
-  autocmd FileType typescript setlocal completeopt+=preview
-  autocmd FileType typescript nmap <buffer> <Leader>T : <C-u>echo tsuquyomi#hint()<CR>
-" }}}
-
 " Flow -----------------------------------------------------------------{{{
   "
   " Hint flow
   autocmd FileType javascript nmap <buffer> <Leader>T : FlowType<CR>
+  let g:flow#autoclose = 1
   "
   " Got to definition
-  map <Leader>d : FlowJumpToDef<CR>
+  autocmd FileType javascript map <Leader>d : FlowJumpToDef<CR>
 " }}}
 
 " Themes, Commands, etc  ----------------------------------------------------{{{
@@ -217,42 +181,15 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   colorscheme gruvbox
   let g:gruvbox_contrast_dark="hard"
   "
-  " For Neovim 0.1.3 and 0.1.4
-  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-  "
   " Or if you have Neovim >= 0.1.5
   if (has("termguicolors"))
-   set termguicolors
+    set termguicolors
   endif
-  "
-  " enable italics, disabled by default
-  let g:oceanic_next_terminal_italic = 1
-  "
-  " enable bold, disabled by default
-  let g:oceanic_next_terminal_bold = 1
   "
   set background=dark
 "}}}
 
 " Fold, gets it's own section  ----------------------------------------------{{{
-  function! MyFoldText() " {{{
-      let line = getline(v:foldstart)
-
-      let nucolwidth = &fdc + &number * &numberwidth
-      let windowwidth = winwidth(0) - nucolwidth - 3
-      let foldedlinecount = v:foldend - v:foldstart
-
-      " expand tabs into spaces
-      let onetab = strpart('          ', 0, &tabstop)
-      let line = substitute(line, '\t', onetab, 'g')
-
-      let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
-      let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
-      return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
-  endfunction " }}}
-
-  set foldtext=MyFoldText()
-
   autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
   autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
 
@@ -282,7 +219,7 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   " autocmd StdinReadPre * let s:std_in=1
   " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | FZF | endif
   map - :NERDTreeToggle<CR> " Toggle nerdtree
-  map <C-\> :NERDTreeFind<CR> " Open current file in nerdtree
+  map <C-,> :NERDTreeFind<CR> " Open current file in nerdtree
   autocmd StdinReadPre * let s:std_in=1
   let NERDTreeShowHidden=1
   let g:NERDTreeWinSize=45
@@ -311,70 +248,56 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 
 " Snipppets -----------------------------------------------------------------{{{
   " Enable snipMate compatibility feature.
-  let g:neosnippet#enable_snipmate_compatibility = 1
-  let g:neosnippet#expand_word_boundary = 1
-  imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-  smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-  xmap <C-k>     <Plug>(neosnippet_expand_target)
+  " let g:neosnippet#enable_snipmate_compatibility = 1
+  " let g:neosnippet#expand_word_boundary = 1
+  " imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+  " smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+  " xmap <C-k>     <Plug>(neosnippet_expand_target)
+  let g:UltiSnipsExpandTrigger="<tab>"
+  let g:UltiSnipsJumpForwardTrigger="<tab>"
+  let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+  " call deoplete#custom#set('ultisnips', 'matchers', ['matcher_fuzzy'])
 
-  " Tell Neosnippet about the other snippets
-  let g:neosnippet#snippets_directory='~/.config/repos/github.com/Shougo/neosnippet-snippets/neosnippets'
+
+  " " Tell Neosnippet about the other snippets
+  " let g:neosnippet#snippets_directory='~/.config/repos/github.com/Shougo/neosnippet-snippets/neosnippets'
 
   " SuperTab like snippets behavior.
-  imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-  \ "\<Plug>(neosnippet_expand_or_jump)"
-  \: pumvisible() ? "\<C-n>" : "\<TAB>"
-  smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-  \ "\<Plug>(neosnippet_expand_or_jump)"
-  \: "\<TAB>"
+  " imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+  " \ \<Plug>(neosnippet_expand_or_jump)"
+  " \: pumvisible() ? "\<C-n>" : "\<TAB>"
+  " smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+  " \ \<Plug>(neosnippet_expand_or_jump)"
+  " \: \<TAB>"
 
 "}}}
 
 " Javscript omni complete ---------------------------------------------------{{{
   set splitbelow
   set completeopt+=noselect
-  let g:deoplete#enable_at_startup = 1
-  function! Multiple_cursors_before()
-    let b:deoplete_disable_auto_complete=1
-  endfunction
-  function! Multiple_cursors_after()
-    let b:deoplete_disable_auto_complete=0
-  endfunction
+  " let g:deoplete#enable_at_startup = 1
+  " function! Multiple_cursors_before()
+  "   let b:deoplete_disable_auto_complete=1
+  " endfunction
+  " function! Multiple_cursors_after()
+  "   let b:deoplete_disable_auto_complete=0
+  " endfunction
 "}}}
 
-" vim-airline ---------------------------------------------------------------{{{
-  let g:airline#extensions#tabline#enabled = 1
-  let g:airline_skip_empty_sections = 1
-  set hidden
-  let g:airline#extensions#tabline#fnamemod = ':t'
-  let g:airline#extensions#tabline#show_tab_nr = 1
-  let g:airline_theme='gruvbox'
-  let g:airline_powerline_fonts = 1
-  tmap <leader>x <c-\><c-n>:bp! <BAR> bd! #<CR>
-  nmap <leader>, :bnext<CR>
-  tmap <leader>, <C-\><C-n>:bnext<cr>
-  nmap <leader>. :bprevious<CR>
-  tmap <leader>. <C-\><C-n>:bprevious<CR>
-  let g:airline#extensions#tabline#buffer_idx_mode = 1
-  tmap <leader>1  <C-\><C-n><Plug>AirlineSelectTab1
-  tmap <leader>2  <C-\><C-n><Plug>AirlineSelectTab2
-  tmap <leader>3  <C-\><C-n><Plug>AirlineSelectTab3
-  tmap <leader>4  <C-\><C-n><Plug>AirlineSelectTab4
-  tmap <leader>5  <C-\><C-n><Plug>AirlineSelectTab5
-  tmap <leader>6  <C-\><C-n><Plug>AirlineSelectTab6
-  tmap <leader>7  <C-\><C-n><Plug>AirlineSelectTab7
-  tmap <leader>8  <C-\><C-n><Plug>AirlineSelectTab8
-  tmap <leader>9  <C-\><C-n><Plug>AirlineSelectTab9
-  nmap <leader>1 <Plug>AirlineSelectTab1
-  nmap <leader>2 <Plug>AirlineSelectTab2
-  nmap <leader>3 <Plug>AirlineSelectTab3
-  nmap <leader>4 <Plug>AirlineSelectTab4
-  nmap <leader>5 <Plug>AirlineSelectTab5
-  nmap <leader>6 <Plug>AirlineSelectTab6
-  nmap <leader>7 <Plug>AirlineSelectTab7
-  nmap <leader>8 <Plug>AirlineSelectTab8
-  nmap <leader>9 <Plug>AirlineSelectTab9
-"}}}
+" buftabline ---------------------------------------------------------------------- {{{
+
+  let g:buftabline_numbers=2
+  nmap <leader>1 <Plug>BufTabLine.Go(1)
+  nmap <leader>2 <Plug>BufTabLine.Go(2)
+  nmap <leader>3 <Plug>BufTabLine.Go(3)
+  nmap <leader>4 <Plug>BufTabLine.Go(4)
+  nmap <leader>5 <Plug>BufTabLine.Go(5)
+  nmap <leader>6 <Plug>BufTabLine.Go(6)
+  nmap <leader>7 <Plug>BufTabLine.Go(7)
+  nmap <leader>8 <Plug>BufTabLine.Go(8)
+  nmap <leader>9 <Plug>BufTabLine.Go(9)
+  nmap <leader>0 <Plug>BufTabLine.Go(10)
+" }}}
 
 " fzf ---------------------------------------------------------------------- {{{
   map <C-A> :FZF<CR>
@@ -392,6 +315,8 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 " ale -----------------------------------------------------------------------{{{
   nmap <silent> <C-k> <Plug>(ale_previous_wrap)
   nmap <silent> <C-j> <Plug>(ale_next_wrap)
+  let g:ale_lint_on_text_changed = 'never'
+  let g:ale_lint_on_enter = 0
 " }}}
 
 " Allows you to visually select a section and then hit @ to run a macro on all lines
@@ -423,7 +348,7 @@ endfunction
 
 au VimEnter * call InsertIfEmpty()
 
-let g:formatdef_js_prettier= '"prettier --stdin"'
+let g:formatdef_js_prettier= '"prettier --stdin --single-quote --no-semi --no-bracket-spacing --tab-width 4"'
 let g:formatters_javascript = ['js_prettier']
 
 let g:formatdef_elm_format = '"elm-format --stdin"'
@@ -431,7 +356,7 @@ let g:formatters_elm = ['elm_format']
 
 let g:tsuquyomi_single_quote_import=1
 
-inoremap <Leader><Leader>p <C-R>"<esc>
+noremap <Leader><Leader>p <C-R>"
 let g:gruvbox_contrast_dark = "hard"
 
 let g:ale_linters = { 'elixir': [] }
@@ -444,3 +369,23 @@ nmap fj :<C-U>call FormatJSON(v:count)<CR>
 
 let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.js,*.jsx"
 
+autocmd BufRead,BufNewFile *.js set suffixesadd+=.jsx,.js
+
+set mouse=a
+
+map <left> :bp<CR>
+map <right> :bn<CR>
+
+noremap <silent> <C-l> <c-w>l
+tnoremap <silent> <C-l> <C-\><C-n><c-w>l
+noremap <silent> <C-h> <c-w>h
+tnoremap <silent> <C-h> <C-\><C-n><c-w>h
+noremap <silent> <C-k> <c-w>k
+tnoremap <silent> <C-k> <C-\><C-n><c-w>k
+noremap <silent> <C-j> <c-w>j
+
+tnoremap <silent> <Esc> <C-\><C-n>
+autocmd BufWinEnter,WinEnter term://* startinsert
+
+autocmd FileType python nmap <Leader>d :YcmCompleter GoTo<CR>
+autocmd Filetype json let g:indentLine_setConceal = 0

@@ -2,6 +2,8 @@
 source ~/.config/git-aliases.fish
 
 export EDITOR=nvim
+export PYTHONPATH=$HOME/Code/PassFort
+export PASSFORT_ROOT=$HOME/Code/PassFort
 
 function tree
     find $argv[1] -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
@@ -107,6 +109,12 @@ function fish_prompt
 
     z --add "$PWD"
 
+    if test -e .venv/bin/activate.fish
+        echo "Found venv"
+        source .venv/bin/activate.fish
+    end
+
+
     if [ $last_status -ne 0 ]
         set_color red
         echo -ne '\n▽ '
@@ -185,4 +193,7 @@ function vf
      print -l $files[1]
   end
 end
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/will/Downloads/google-cloud-sdk/path.fish.inc' ]; if type source > /dev/null; source '/Users/will/Downloads/google-cloud-sdk/path.fish.inc'; else; . '/Users/will/Downloads/google-cloud-sdk/path.fish.inc'; end; end
 

@@ -187,4 +187,3 @@ function z -d "Jump to a recent directory."
         end
     end
 end
-0
