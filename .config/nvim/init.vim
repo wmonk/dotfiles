@@ -5,8 +5,11 @@
 	let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 	set termguicolors
 	let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
-	set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·,eol:⨼,space:.
+	set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·,eol:⨼
 	set list!
+	set ts=4
+	set sw=4
+	set expandtab
 
 	" Setup plugins ------------------------------------------------------------{{{{{{}}}{{{}}}
 	call plug#begin('~/.vim/plugged')
@@ -26,6 +29,10 @@
 	Plug 'mxw/vim-jsx'
 	Plug 'christoomey/vim-tmux-navigator'
 	Plug 'MaxMEllon/vim-jsx-pretty'
+  Plug 'elixir-editors/vim-elixir'
+  Plug 'slashmili/alchemist.vim'
+  Plug 'dag/vim-fish'
+  Plug 'chr4/nginx.vim'
 	"
 	" colorschemes
 	Plug 'morhetz/gruvbox'
@@ -202,6 +209,9 @@
 	set background=dark
 	au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 	highlight ExtraWhitespace ctermbg=red guibg=red
+	highlight BufTabLineHidden guifg=lightgray
+	highlight BufTabLineActive guifg=white guibg=lightblue
+	highlight BufTabLineCurrent guifg=black guibg=lightblue
 	"}}}
 
 	" Fold, gets it's own section  ----------------------------------------------{{{
@@ -218,7 +228,7 @@
 
 	autocmd FileType html setlocal fdl=99
 
-	autocmd FileType javascript,html,css,scss,typescript setlocal foldlevel=3
+	autocmd FileType javascript,html,css,scss,typescript setlocal foldlevel=999
 	autocmd FileType css,scss,json setlocal foldmethod=marker
 	autocmd FileType css,scss,json setlocal foldmarker={,}
 
@@ -404,3 +414,11 @@
 	autocmd FileType python nmap <Leader>d :YcmCompleter GoTo<CR>
 	autocmd Filetype json let g:indentLine_setConceal = 0
 	let g:ycm_key_list_select_completion = ['DOWN']
+
+	let g:ale_fixers = {
+  \   'javascript': [
+  \       'prettier',
+  \   ],
+  \}
+
+  let g:ycm_server_python_interpreter = '/usr/local/bin/python3'
