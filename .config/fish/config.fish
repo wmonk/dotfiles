@@ -103,7 +103,7 @@ if set -q __fish_vi_mode
   end
 end
 
-function fish_prompt
+function _fish_prompt
     set -l last_status $status
     set -l git_branch (git branch ^/dev/null | sed -n '/\* /s///p')
 
@@ -197,3 +197,5 @@ end
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/will/Downloads/google-cloud-sdk/path.fish.inc' ]; if type source > /dev/null; source '/Users/will/Downloads/google-cloud-sdk/path.fish.inc'; else; . '/Users/will/Downloads/google-cloud-sdk/path.fish.inc'; end; end
 
+
+set -g PATH ~/.cargo/bin $PATH
