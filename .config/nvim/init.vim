@@ -11,6 +11,9 @@ set ts=4
 set sw=4
 set expandtab
 set hidden
+set undodir=$HOME/.vim/undodir
+set undolevels=1000
+set undoreload=10000
 
 " Setup plugins {{{
 call plug#begin('~/.vim/plugged')
@@ -19,12 +22,15 @@ call plug#begin('~/.vim/plugged')
 " syntax
 Plug 'flowtype/vim-flow'
 Plug 'ElmCast/elm-vim'
+Plug 'jelera/vim-javascript-syntax'
+Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'Quramy/vim-js-pretty-template'
 Plug 'wavded/vim-stylus'
 Plug 'moll/vim-node'
+Plug 'neoclide/vim-jsx-improve'
 Plug 'othree/yajs.vim'
-Plug 'mxw/vim-jsx'
-Plug 'MaxMEllon/vim-jsx-pretty'
+" Plug 'mxw/vim-jsx'
+" Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'elixir-editors/vim-elixir'
 Plug 'slashmili/alchemist.vim'
 Plug 'dag/vim-fish'
@@ -35,7 +41,10 @@ Plug 'rust-lang/rust.vim'
 Plug 'morhetz/gruvbox'
 "
 " system
+Plug 'mbbill/undotree'
+Plug 'tpope/vim-projectionist'
 Plug 'ap/vim-buftabline'
+Plug 'itchyny/lightline.vim'
 Plug 'Shougo/vimproc.vim', {'build' : 'make'}
 Plug 'w0rp/ale'
 Plug 'christoomey/vim-tmux-navigator'
@@ -45,28 +54,35 @@ Plug 'valloric/MatchTagAlways', {'on_ft': ['html','javascript']} " tag highgligh
 Plug 'airblade/vim-gitgutter' " Git markings in gutter
 Plug 'tpope/vim-repeat' " Repeat plugin commands not just native
 Plug 'editorconfig/editorconfig-vim'
-Plug 'scrooloose/nerdtree' " Sidebar for file browsing
-Plug 'Xuyuanp/nerdtree-git-plugin' " Git symbols for above
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'tpope/vim-vinegar'
+" Plug 'scrooloose/nerdtree' " Sidebar for file browsing
+" Plug 'Xuyuanp/nerdtree-git-plugin' " Git symbols for above
+" Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'tpope/vim-surround' " Surrounds true -> (true)
 Plug 'tomtom/tcomment_vim' " comment lines, blocks
 Plug 'Chiel92/vim-autoformat'
 Plug 'terryma/vim-multiple-cursors' " Multiple cursors are great
 Plug 'itchyny/vim-cursorword' " Underlines the word under cursor
 Plug 'Valloric/YouCompleteMe'
+Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+Plug 'roxma/nvim-completion-manager'
 Plug 'jiangmiao/auto-pairs'
 Plug 'kshenoy/vim-signature'
-Plug 'alvan/vim-closetag'
+" Plug 'alvan/vim-closetag'
 Plug 'chrisbra/Colorizer' " Highlight hex colors
 Plug 'majutsushi/tagbar'
+Plug 'janko-m/vim-test'
+Plug 'blueyed/vim-diminactive'
+Plug 't9md/vim-quickhl'
 "
 " fzf
 Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
 "
 " snippets
 Plug 'epilande/vim-es2015-snippets'
-Plug 'epilande/vim-react-snippets'
+" Plug 'epilande/vim-react-snippets'
 Plug 'alexbyk/vim-ultisnips-js-testing'
+Plug 'wmonk/vim-react-snippets'
 Plug 'SirVer/ultisnips'
 
 "
@@ -129,6 +145,7 @@ map / <Plug>(easymotion-sn)
 " Disable arrow keys!
 map <up> <nop>
 map <down> <nop>
+
 "
 " Quick switching between splits
 map <C-h> <C-w>h
@@ -211,6 +228,8 @@ endif
 set background=dark
 au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 highlight ExtraWhitespace ctermbg=red guibg=red
+highlight ALEErrorSign ctermbg=red guibg=red ctermfg=white
+highlight ALEWarningSign ctermbg=58 guibg=#5f5f00 ctermfg=white
 "}}}
 
 " Fold, gets it's own section {{{
@@ -243,32 +262,32 @@ autocmd FileType javascript,typescript,json setl foldmethod=syntax
 " Auto open nerdtree if no file opened
 " autocmd StdinReadPre * let s:std_in=1
 " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | FZF | endif
-map - :NERDTreeToggle<CR> " Toggle nerdtree
-map <C-,> :NERDTreeFind<CR> " Open current file in nerdtree
-autocmd StdinReadPre * let s:std_in=1
-let NERDTreeShowHidden=1
-let g:NERDTreeWinSize=45
-let g:NERDTreeAutoDeleteBuffer=1
-"
-" Git markings for nerdtree
-let g:NERDTreeIndicatorMapCustom = {
-      \ "Modified"  : "✹",
-      \ "Staged"    : "✚",
-      \ "Untracked" : "✭",
-      \ "Renamed"   : "➜",
-      \ "Unmerged"  : "═",
-      \ "Deleted"   : "✖",
-      \ "Dirty"     : "✗",
-      \ "Clean"     : "✔︎",
-      \ "Unknown"   : "?"
-      \ }
-"
-" Highlight filetypes in nerdtree
-let g:NERDTreeFileExtensionHighlightFullName = 1
-let g:NERDTreeExactMatchHighlightFullName = 1
-let g:NERDTreePatternMatchHighlightFullName = 1
-let g:NERDTreeExtensionHighlightColor = {} " this line is needed to avoid error
-let g:NERDTreeExtensionHighlightColor['tsx'] = '44788E' " sets the color of css files to blue
+" map - :NERDTreeToggle<CR> " Toggle nerdtree
+" map <C-x> :NERDTreeFind<CR> " Open current file in nerdtree
+" autocmd StdinReadPre * let s:std_in=1
+" let NERDTreeShowHidden=1
+" let g:NERDTreeWinSize=45
+" let g:NERDTreeAutoDeleteBuffer=1
+" "
+" " Git markings for nerdtree
+" let g:NERDTreeIndicatorMapCustom = {
+"       \ "Modified"  : "✹",
+"       \ "Staged"    : "✚",
+"       \ "Untracked" : "✭",
+"       \ "Renamed"   : "➜",
+"       \ "Unmerged"  : "═",
+"       \ "Deleted"   : "✖",
+"       \ "Dirty"     : "✗",
+"       \ "Clean"     : "✔︎",
+"       \ "Unknown"   : "?"
+"       \ }
+" "
+" " Highlight filetypes in nerdtree
+" let g:NERDTreeFileExtensionHighlightFullName = 1
+" let g:NERDTreeExactMatchHighlightFullName = 1
+" let g:NERDTreePatternMatchHighlightFullName = 1
+" let g:NERDTreeExtensionHighlightColor = {} " this line is needed to avoid error
+" let g:NERDTreeExtensionHighlightColor['tsx'] = '44788E' " sets the color of css files to blue
 "}}}
 
 " Snipppets {{{
@@ -331,12 +350,21 @@ map <Leader>b :Buffers<CR>
 " }}}
 
 " ale {{{
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
+nmap <silent> <leader>k <Plug>(ale_previous_wrap)
+nmap <silent> <leader>j <Plug>(ale_next_wrap)
 let g:ale_lint_on_text_changed = 'never'
+let g:ale_sign_error = '⨉'
+let g:ale_sign_warning = '●'
 let g:ale_lint_on_enter = 0
 " }}}
 
+" hilighterr {{{
+nmap <Leader>m <Plug>(quickhl-manual-this)
+nmap <Leader>h <Plug>(quickhl-manual-this-whole-word)
+nmap <Leader>c <Plug>(quickhl-manual-clear)
+nmap <Leader>M <Plug>(quickhl-manual-reset)
+" }}}
+"
 " Allows you to visually select a section and then hit @ to run a macro on all lines
 " https://medium.com/@schtoeffel/you-don-t-need-more-than-one-cursor-in-vim-2c44117d51db#.3dcn9prw6
 xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
@@ -351,7 +379,7 @@ function! AdjustWindowHeight(minheight, maxheight)
   exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
 endfunction
 
-function InsertIfEmpty()
+function! InsertIfEmpty()
   if @% == ""
     " No filename for current buffer
     FZF
@@ -379,7 +407,7 @@ let g:gruvbox_contrast_dark = "hard"
 
 let g:ale_linters = { 'elixir': [], 'rust': ['rustc'] }
 
-function FormatJSON(...)
+function! FormatJSON(...)
   execute "%! node -e 'process.stdin.on(\"data\", data => console.log(JSON.stringify(eval(`data = ${data.toString()}`), null, 4)))"
 endfunction
 
@@ -428,6 +456,48 @@ let g:tagbar_type_rust = {
       \'m:modules, module names',
       \'c:consts, static constants',
       \'t:traits',
-      \'i:impls, trait implementations',
+      \'i:impls, trait implementations'
       \]
       \}
+
+nmap <C-w>z :tabedit %<CR>
+
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+    \ 'javascript': ['flow-language-server', '--stdio'],
+    \ }
+
+" \ 'javascript.jsx': ['javascript-typescript-stdio'],
+" \ 'javascript': ['javascript-typescript-stdio'],
+
+" Automatically start language servers.
+let g:LanguageClient_autoStart = 1
+
+nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+nnoremap <silent> <Leader-r> :call LanguageClient_textDocument_rename()<CR>
+
+let g:test#javascript#jest#file_pattern = '\vtests?\.(js|jsx|coffee)$'
+
+noremap <Leader>t :TestFile -strategy=neovim<cr>
+noremap <Leader>s *Nciw
+
+let g:lightline = {
+      \ 'colorscheme': 'powerline',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head',
+      \   'filename': 'LightLineFilename'
+      \ },
+      \ }
+function! LightLineFilename()
+  return expand('%:F')
+endfunction
+
+let g:tmux_navigator_disable_when_zoomed = 1
+
+let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '<': '>'}
+" let g:flow#flowpath = '/usr/local/bin/flow'

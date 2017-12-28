@@ -1,5 +1,6 @@
 . ~/.config/z-fish/z.fish
 source ~/.config/git-aliases.fish
+source ~/.config/fish/df.fish
 
 export EDITOR=nvim
 export PYTHONPATH=$HOME/Code/PassFort
@@ -52,9 +53,9 @@ end
 # eval sh ~/.config/base16-shell/base16-ocean.light.sh
 
 # nodejs
-set -x NODE_PATH "$HOME/.npm-packages/lib/node_modules" $NODE_PATH
-set -x PATH "./node_modules/.bin" $PATH
-set -x PATH "/usr/local/sbin" $PATH
+set -g NODE_PATH "$HOME/.npm-packages/lib/node_modules" $NODE_PATH
+set -g PATH "./node_modules/.bin" $PATH
+set -g PATH "/usr/local/sbin" $PATH
 
 set __fish_git_prompt_showdirtystate 'yes'
 set __fish_git_prompt_describe_style 'branch'
@@ -103,46 +104,8 @@ if set -q __fish_vi_mode
   end
 end
 
-function _fish_prompt
-    set -l last_status $status
-    set -l git_branch (git branch ^/dev/null | sed -n '/\* /s///p')
-
-    z --add "$PWD"
-
-    if test -e .venv/bin/activate.fish
-        echo "Found venv"
-        source .venv/bin/activate.fish
-    end
-
-
-    if [ $last_status -ne 0 ]
-        set_color red
-        echo -ne '\n▽ '
-    else
-        set_color cyan
-        echo -ne '\n△ '
-    end
-    set_color yellow
-    echo -ne (prompt_pwd)
-    set_color normal
-
-    if echo "$PWD" | grep -q -E 'vmcode|skybetdev'
-        set_color normal
-        echo " =>"
-        return
-    end
-
-    if git ls-files >/dev/null ^/dev/null
-        if git status | grep "nothing to commit" > /dev/null
-            set_color green
-        else
-            set_color red
-        end
-    end
-
-    echo (__fish_git_prompt)
-    set_color normal
-    echo -e '=> '
+function fish_right_prompt
+    __fish_git_prompt
 end
 
 function gh --description 'Open the webpage for the current github repo/branch'
@@ -181,7 +144,6 @@ function gh --description 'Open the webpage for the current github repo/branch'
 end
 
 alias vimconfig="nvim ~/.config/nvim/ts.vim"
-#alias npm="npm -s"
 
 test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish
 
@@ -194,8 +156,55 @@ function vf
   end
 end
 
+set new_shell 1
+
+function __check_pipenv --description 'Do pipenv stuff' --on-variable PWD
+    status --is-command-substitution
+    and return
+
+    if test $new_shell -eq 1
+        set new_shell 0
+        and return
+    end
+
+    set -l GIT_DIR (git rev-parse --git-dir 2> /dev/null)
+
+    if test -e "$GIT_DIR"
+        if test ".git" = $GIT_DIR
+            set GIT_DIR (pwd)/.git
+        end
+        set -l PROJECT_ROOT (dirname $GIT_DIR)
+        set -l VENV_FILE $PROJECT_ROOT/.venv
+        set -gx PYTHONPATH (pwd)
+
+        if [ -f $VENV_FILE ]
+            and test "$VIRTUAL_ENV" = ""
+            echo "Found .venv file "
+            # pipenv --venv
+            source (pipenv --venv)/bin/activate.fish
+        end
+    else
+        if test "$VIRTUAL_ENV" != ""
+            echo "Left venv, deactivating"
+            deactivate
+        end
+    end
+end
+
+abbr br="git branch ^/dev/null | sed -n '/\* /s///p'"
+
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/will/Downloads/google-cloud-sdk/path.fish.inc' ]; if type source > /dev/null; source '/Users/will/Downloads/google-cloud-sdk/path.fish.inc'; else; . '/Users/will/Downloads/google-cloud-sdk/path.fish.inc'; end; end
 
+set -x PATH ~/.cargo/bin $PATH
+set -x PATH ~/.yarn/bin $PATH
 
-set -g PATH ~/.cargo/bin $PATH
+alias fvim="vim (fzf)"
+alias recent="git checkout (git reflog | egrep -io 'moving from ([^[:space:]]+)' | awk '{ print \$3 }' | awk ' !x[\$0]++' | fzf)"
+
+set -gx PATH "/Users/will/.opam/system/bin" $PATH;
+set -gx OCAML_TOPLEVEL_PATH "/Users/will/.opam/system/lib/toplevel";
+set -gx PERL5LIB "/Users/will/.opam/system/lib/perl5:$PERL5LIB";
+set -gx MANPATH "$MANPATH" "/Users/will/.opam/system/man";
+set -gx OPAMUTF8MSGS "1";
+set -gx CAML_LD_LIBRARY_PATH "/Users/will/.opam/system/lib/stublibs:/usr/local/lib/ocaml/stublibs";
