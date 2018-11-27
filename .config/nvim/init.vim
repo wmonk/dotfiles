@@ -19,9 +19,24 @@ set autoindent
 set smartindent
 set incsearch
 set inccommand=split
+set foldmethod=manual
+
+let g:loaded_python_provider = 1
+let g:python_host_prog='/usr/local/bin/python'
+let g:python3_host_prog='/usr/local/bin/python3'
+
+let &t_Cs = "\e[4:3m"
+let &t_Ce = "\e[4:3m"
+hi SpellBad gui=undercurl guisp=red term=undercurl cterm=undercurl
 
 call plug#begin('~/.vim/plugged')
 
+Plug 'nightsense/stellarized'
+Plug 'iloginow/vim-stylus'
+Plug 'cormacrelf/vim-colors-github'
+Plug 'AndrewRadev/switch.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'FooSoft/vim-argwrap'
 Plug 'zooxyt/Ultisnips-rust'
 Plug 'tomtom/tcomment_vim'
 Plug 'rust-lang/rust.vim'
@@ -43,12 +58,18 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
-Plug 'roxma/nvim-completion-manager'
+Plug 'ncm2/ncm2'
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-tmux'
+Plug 'ncm2/ncm2-path'
+Plug 'ncm2/ncm2-ultisnips'
+Plug 'roxma/nvim-yarp'
 Plug 'SirVer/ultisnips'
 Plug 'alexbyk/vim-ultisnips-js-testing'
 Plug 'wmonk/vim-react-snippets'
 Plug 'SirVer/ultisnips'
 Plug 'epilande/vim-es2015-snippets'
+Plug 'bogado/file-line'
 
 call plug#end()
 
@@ -84,20 +105,25 @@ function! Agerium()
   execute 'Ag ' . params
 endfunction
 map <Leader>i :call Agerium()<CR>
+vmap <Leader>i y:Ag <C-R>"<CR>
 map <Leader>g :GFiles?<CR>
 map <Leader>b :Buffers<CR>
 map <Leader>l :Lines<CR>
 
+    " \ 'javascript': ['javascript-typescript-stdio', '-l', '~/Code/tmp/ll'],
+    " \ 'javascript.jsx': ['javascript-typescript-stdio', '-l', '~/Code/tmp/ll'],
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    \ 'javascript': ['flow-language-server', '--stdio'],
     \ 'python': ['pyls', '-vv'],
+    \ 'javascript': ['flow', 'lsp', '--from', './node_modules/.bin'],
+    \ 'javascript.jsx': ['flow', 'lsp', '--from', './node_modules/.bin'],
     \ 'typescript': ['typescript-language-server', '--stdio'],
     \ 'reason': ['/Users/will/Downloads/reason-language-server/reason-language-server.exe']
     \ }
 let g:LanguageClient_autoStart = 1
 
 nnoremap <silent> <Leader>T :call LanguageClient_textDocument_hover()<CR>
+nnoremap <silent> <Leader>D :vsplit<CR><C-W>l:call LanguageClient_textDocument_definition()<CR>
 nnoremap <silent> <Leader>d :call LanguageClient_textDocument_definition()<CR>
 nnoremap <silent> <Leader>r :call LanguageClient_textDocument_rename()<CR>
 
@@ -162,3 +188,36 @@ augroup END
 
 let g:LanguageClient_loggingFile = '/tmp/LanguageClient.log'
 let g:LanguageClient_serverStderr = '/tmp/LanguageServer.log'
+
+nnoremap <silent> <leader>a :ArgWrap<CR>
+
+autocmd FileType rust let b:switch_custom_definitions =
+      \ [
+      \   {
+      \     '&\(.\+\)':        '\1'
+      \   }
+      \ ]
+
+
+highlight ExtraWhitespace guisp=red
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
+
+" Disable tmux navigator when zooming the Vim pane
+let g:tmux_navigator_disable_when_zoomed = 1
+
+
+" ncm2
+autocmd BufEnter  *  call ncm2#enable_for_buffer()
+set completeopt=noinsert,menuone,noselect
+inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+
+" Use <TAB> to select the popup menu:
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+au BufNewFile,BufRead,BufReadPost Pipfile set ft=cfg
+
