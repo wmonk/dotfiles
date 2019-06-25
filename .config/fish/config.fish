@@ -2,11 +2,15 @@ if not status --is-interactive
   exit
 end
 
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
 set -U TERM xterm-256coor
 export EDITOR=nvim
 export PYTHONPATH=$HOME/Code/minifort/services/passfort
 export PASSFORT_ROOT=$HOME/Code/minifort/services/passfort
 export RUST_SRC_PATH=/Users/will/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/src
+export OPENSSL_DIR=/usr/local/opt/openssl
 
 function tree
     find $argv[1] -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
@@ -40,7 +44,6 @@ end
 
 alias lll='ls -1 | less'
 
-abbr br="git branch ^/dev/null | sed -n '/\* /s///p'"
 
 set -x PATH ~/.cargo/bin $PATH
 set -x PATH ~/.yarn/bin $PATH
@@ -52,38 +55,42 @@ alias c="fzf-cd-widget"
 alias git=hub
 alias json="pbpaste | jq . -C | less -r"
 
-abbr gcl='git clone'
-abbr ga='git add'
-abbr gap='git add -p'
-abbr gf='git fetch --all --prune'
-abbr gm="git merge"
-abbr g='git'
-abbr gs='git status'
-abbr gl='git pull'
-abbr gr='git rebase'
-abbr grc='git rebase --continue'
-abbr grom='git rebase origin/master'
-abbr gros='git rebase origin/staging'
-abbr gp='git push'
-abbr gpu='git push --set-upstream'
-abbr gc='git commit -v'
-abbr gcm='git commit -v -m'
-abbr gb='git branch'
-abbr gba='git branch -a'
-abbr gcp='git cherry-pick'
-abbr gco='git checkout'
-abbr gcb='git checkout -b'
-abbr gdel='git branch -D'
-abbr glo="git log --oneline"
-abbr gnew="git log HEAD@{1}..HEAD@{0}"
+if status --is-interactive
+    abbr --add --global br "git branch ^/dev/null | sed -n '/\* /s///p'"
+    abbr --add --global gcl 'git clone'
+    abbr --add --global ga 'git add'
+    abbr --add --global gap 'git add -p'
+    abbr --add --global gf 'git fetch --all --prune'
+    abbr --add --global gm "git merge"
+    abbr --add --global g 'git'
+    abbr --add --global gs 'git status'
+    abbr --add --global gl 'git pull'
+    abbr --add --global gr 'git rebase'
+    abbr --add --global grc 'git rebase --continue'
+    abbr --add --global grom 'git rebase origin/master'
+    abbr --add --global gros 'git rebase origin/staging'
+    abbr --add --global gp 'git push'
+    abbr --add --global gpu 'git push --set-upstream'
+    abbr --add --global gc 'git commit -v'
+    abbr --add --global gcm 'git commit -v -m'
+    abbr --add --global gb 'git branch'
+    abbr --add --global gba 'git branch -a'
+    abbr --add --global gcp 'git cherry-pick'
+    abbr --add --global gco 'git checkout'
+    abbr --add --global gcb 'git checkout -b'
+    abbr --add --global gdel 'git branch -D'
+    abbr --add --global glo "git log --oneline"
+    abbr --add --global gnew "git log HEAD@{1}..HEAD@{0}"
+    abbr --add --global gds "git diff --staged"
+    abbr --add --global gsp "git stash pop"
+    abbr --add --global gst "git stash"
+    abbr --add --global gca "git commit --amend"
+    abbr --add --global gcane "git commit --amend --no-edit"
+end
+
 function gd
     git diff --color $argv | diff-so-fancy  | less --tabs=4 -RFX
 end
-abbr gds="git diff --staged"
-abbr gsp="git stash pop"
-abbr gst="git stash"
-abbr gca="git commit --amend"
-abbr gcane="git commit --amend --no-edit"
 
 function fish_right_prompt
     __fish_git_prompt
@@ -103,3 +110,8 @@ end
 # if type -q fizzygit
 #     fizzygit
 # end
+
+set -g fish_user_paths "/usr/local/opt/openssl@1.1/bin" $fish_user_paths 
+set -gx LDFLAGS "-L /usr/local/opt/openssl/lib"
+set -gx CPPFLAGS "-I /usr/local/opt/openssl/include"
+set -gx PKG_CONFIG_PATH "/usr/local/opt/openssl/lib/pkgconfig"
