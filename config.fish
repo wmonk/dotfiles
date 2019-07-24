@@ -7,10 +7,6 @@ export LANG=en_US.UTF-8
 
 set -U TERM xterm-256coor
 export EDITOR=nvim
-export PYTHONPATH=$HOME/Code/minifort/services/passfort
-export PASSFORT_ROOT=$HOME/Code/minifort/services/passfort
-export RUST_SRC_PATH=/Users/will/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/src
-export OPENSSL_DIR=/usr/local/opt/openssl
 
 function tree
     find $argv[1] -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
@@ -106,12 +102,3 @@ function fish_prompt
   # Main
   echo -n (set_color brblack)(date -j "+%H:%M:%S") (set_color cyan)(prompt_pwd) (set_color red)'❯'(set_color yellow)'❯'(set_color green)'❯ '
 end
-
-# if type -q fizzygit
-#     fizzygit
-# end
-
-set -g fish_user_paths "/usr/local/opt/openssl@1.1/bin" $fish_user_paths 
-set -gx LDFLAGS "-L /usr/local/opt/openssl/lib"
-set -gx CPPFLAGS "-I /usr/local/opt/openssl/include"
-set -gx PKG_CONFIG_PATH "/usr/local/opt/openssl/lib/pkgconfig"
