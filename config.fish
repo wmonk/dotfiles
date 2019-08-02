@@ -16,7 +16,7 @@ alias vim="nvim"
 
 # nodejs
 set -g NODE_PATH "$HOME/.npm-packages/lib/node_modules" $NODE_PATH
-set -g PATH "/usr/local/sbin" "./node_modules/.bin" $PATH
+set -g PATH (yarn global bin) "/Users/will/Library/Python/bin" "/usr/local/sbin" "./node_modules/.bin" $PATH
 
 set __fish_git_prompt_showdirtystate 'yes'
 set __fish_git_prompt_describe_style 'branch'
@@ -42,7 +42,6 @@ alias lll='ls -1 | less'
 
 
 set -x PATH ~/.cargo/bin $PATH
-set -x PATH ~/.yarn/bin $PATH
 
 alias fvim="vim (fzf)"
 alias recent="git checkout (git reflog | egrep -io 'moving from ([^[:space:]]+)' | awk '{ print \$3 }' | awk ' !x[\$0]++' | fzf)"

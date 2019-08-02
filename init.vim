@@ -73,7 +73,6 @@ nno <silent> <Leader>T :Veonim hover<cr>
 nno <silent> sp :Veonim show-problem<cr>
 noremap <leader>f :Neoformat<CR>
 let g:neoformat_enabled_python = ['black']
-let g:neoformat_enabled_javascript = ['prettier']
 finish
 endif
 
@@ -103,6 +102,7 @@ set foldmethod=manual
 let g:loaded_python_provider = 1
 let g:python_host_prog='/usr/local/bin/python3'
 let g:python3_host_prog='/usr/local/bin/python3'
+let g:EditorConfig_exclude_patterns = ['fugitive://.\*']
 
 let &t_Cs = "\e[4:3m"
 let &t_Ce = "\e[4:3m"
@@ -117,8 +117,9 @@ Plug 'patstockwell/vim-monokai-tasty'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'elzr/vim-json'
+Plug 'editorconfig/editorconfig-vim'
 
-" Plug 'w0rp/ale'
+Plug 'w0rp/ale'
 Plug 'szorfein/fromthehell.vim'
 Plug 't9md/vim-quickhl'
 Plug 'nightsense/stellarized'
@@ -269,6 +270,10 @@ let g:neoformat_enabled_javascript = ['prettier']
 "
 " let g:formatdef_elm_format = '"elm-format --stdin"'
 " let g:formatters_elm = ['elm_format']
+augroup fmt
+  autocmd!
+  autocmd BufWritePre * undojoin | Neoformat
+augroup END
 
 vnoremap  <leader>y  "+y
 nnoremap  <leader>Y  "+yg_
