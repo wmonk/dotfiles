@@ -1,81 +1,3 @@
-if exists('veonim')
-set sw=4
-set ts=4
-set expandtab
-
-" built-in plugin manager
-Plug 'sheerun/vim-polyglot'
-Plug 'tpope/vim-surround'
-Plug 'morhetz/gruvbox'
-Plug 'sbdchd/neoformat'
-
-set background=dark
-let g:gruvbox_contrast_dark="hard"
-colorscheme gruvbox
-
-set guifont=Iosevka:h18
-
-map <esc> :noh<cr>
-tmap <esc> <c-\><c-n><esc><cr>
-
-let mapleader = "\<Space>"
-set relativenumber
-
-imap <silent> jk <Esc>
-nnoremap ; :
-map <Leader>q :x<CR>
-map <Leader>w :w<CR>
-
-imap <D-v> <C-r><C-o>+
-let g:javascript_plugin_flow = 1
-
-" extensions for web dev
-let g:vscode_extensions = [
-  \'vscode.css-language-features',
-  \'vscode.html-language-features',
-  \'vscode.typescript-language-features',
-  \'rust-lang.rust',
-  \'flowtype.flow-for-vscode'
-\]
-
-" multiple nvim instances
-nno <silent> <C-t>c :Veonim vim-create<cr>
-nno <silent> <C-g> :Veonim vim-switch<cr>
-nno <silent> <C-t>, :Veonim vim-rename<cr>
-nno <silent> <C-t>t :Veonim vim-create-dir ~/Code/minifort/services<cr>
-nno <silent> <C-s> :source ~/.config/nvim/init.vim<cr>
-
-" workspace functions
-nno <silent> <C-p> :Veonim files<cr>
-nno <silent> <C-e> :Veonim explorer<cr>
-nno <silent> <C-b> :Veonim buffers<cr>
-
-" searching text
-nno <silent> <Leader>i :Veonim grep<cr>
-vno <silent> <Leader>i :Veonim grep-word<cr>
-nno <silent> <Leader>l :Veonim buffer-search<cr>
-
-" language features
-" nno <silent> sr :Veonim rename<cr>
-" nno <silent> sd :Veonim definition<cr>
-" nno <silent> si :Veonim implementation<cr>
-nno <silent> <Leader>d :Veonim definition<cr>
-nno <silent> <Leader>T :Veonim hover<cr>
-" nno <silent> sf :Veonim references<cr>
-" nno <silent> sh :Veonim hover<cr>
-" nno <silent> sl :Veonim symbols<cr>
-" nno <silent> so :Veonim workspace-symbols<cr>
-" nno <silent> sq :Veonim code-action<cr>
-" nno <silent> sk :Veonim highlight<cr>
-" nno <silent> sK :Veonim highlight-clear<cr>
-" nno <silent> ,n :Veonim next-usage<cr>
-" nno <silent> ,p :Veonim prev-usage<cr>
-nno <silent> sp :Veonim show-problem<cr>
-noremap <leader>f :Neoformat<CR>
-let g:neoformat_enabled_python = ['black']
-finish
-endif
-
 set termguicolors
 set sw=4
 set ts=4
@@ -98,6 +20,7 @@ set smartindent
 set incsearch
 set inccommand=split
 set foldmethod=manual
+set mouse=a
 
 let g:loaded_python_provider = 1
 let g:python_host_prog='/usr/local/bin/python3'
@@ -153,15 +76,16 @@ Plug 'autozimu/LanguageClient-neovim', {
    \ 'do': 'bash install.sh',
    \ }
 Plug 'ncm2/ncm2'
-Plug 'ncm2/ncm2-bufword'
-Plug 'ncm2/ncm2-tmux'
-Plug 'ncm2/ncm2-path'
-Plug 'ncm2/ncm2-ultisnips'
+" Plug 'ncm2/ncm2-bufword'
+" Plug 'ncm2/ncm2-tmux'
+" Plug 'ncm2/ncm2-path'
+" Plug 'ncm2/ncm2-ultisnips'
 Plug 'roxma/nvim-yarp'
 Plug 'wmonk/vim-react-snippets'
 Plug 'epilande/vim-es2015-snippets'
 Plug 'bogado/file-line'
 Plug 'Raimondi/delimitMate'
+Plug 'nathanaelkane/vim-indent-guides'
 
 call plug#end()
 
@@ -231,11 +155,13 @@ inoremap <expr> <c-x><c-l> fzf#vim#complete(fzf#wrap({
 
     " \ 'javascript': ['javascript-typescript-stdio', '-l', '~/Code/tmp/ll'],
     " \ 'javascript.jsx': ['javascript-typescript-stdio', '-l', '~/Code/tmp/ll'],
+    " \ 'javascript': ['flow', 'lsp', '--from', './node_modules/.bin'],
+    " \ 'javascript.jsx': ['flow', 'lsp', '--from', './node_modules/.bin'],
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'nightly', 'rls'],
     \ 'python': ['python', '-m', 'pyls', '-vv'],
-    \ 'javascript': ['flow', 'lsp', '--from', './node_modules/.bin'],
-    \ 'javascript.jsx': ['flow', 'lsp', '--from', './node_modules/.bin'],
+    \ 'javascript': ['javascript-typescript-stdio', '-l', '~/Code/tmp/ll'],
+    \ 'javascript.jsx': ['javascript-typescript-stdio', '-l', '~/Code/tmp/ll'],
     \ 'typescript': ['typescript-language-server', '--stdio'],
     \ 'reason': ['/Users/will/Downloads/reason-language-server/reason-language-server.exe']
     \ }
@@ -244,7 +170,7 @@ let g:LanguageClient_autoStart = 1
 nnoremap <silent> <Leader>T :call LanguageClient_textDocument_hover()<CR>
 nnoremap <silent> <Leader>D :vsplit<CR><C-W>l:call LanguageClient_textDocument_definition()<CR>
 nnoremap <silent> <Leader>d :call LanguageClient_textDocument_definition()<CR>
-nnoremap <silent> <Leader>r :call LanguageClient_textDocument_rename()<CR>
+" nnoremap <silent> <Leader>r :call LanguageClient_textDocument_rename()<CR>
 nnoremap <silent> <Leader>R :call LanguageClient_textDocument_references()<CR>
 
 nnoremap <Leader>j :cp<CR>
@@ -262,7 +188,6 @@ let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
-noremap <leader>f :Neoformat<CR>
 let g:neoformat_enabled_python = ['black']
 let g:neoformat_enabled_javascript = ['prettier']
 " let g:formatdef_js_prettier= '"prettier --stdin --single-quote --no-semi --no-bracket-spacing --tab-width 4"'
@@ -275,19 +200,20 @@ augroup fmt
   autocmd BufWritePre * undojoin | Neoformat
 augroup END
 
-vnoremap  <leader>y  "+y
-nnoremap  <leader>Y  "+yg_
-nnoremap  <leader>y  "+y
-nnoremap  <leader>yy  "+yy
-nnoremap <leader>p "+p
-nnoremap <leader>P "+P
-vnoremap <leader>p "+p
-vnoremap <leader>P "+P
+vnoremap  <Leader>y  "+y
+nnoremap  <Leader>Y  "+yg_
+nnoremap  <Leader>y  "+y
+nnoremap  <Leader>yy  "+yy
+nnoremap <Leader>p "+p
+nnoremap <Leader>P "+P
+vnoremap <Leader>p "+p
+vnoremap <Leader>P "+P
  
 let g:test#javascript#jest#file_pattern = '\vtests?\.(js|jsx|coffee)$'
 let g:test#javascript#jest#options = '--reporters jest-simple-reporter'
 noremap <Leader>t :TestFile -strategy=neomake<cr>
 noremap <Leader>s *Nciw
+noremap <Leader>r yiw:%s/<C-r>"/
 
 function s:Bar(type, msg)
   if a:type == "red"
@@ -315,7 +241,7 @@ augroup END
 let g:LanguageClient_loggingFile = '/tmp/LanguageClient.log'
 let g:LanguageClient_serverStderr = '/tmp/LanguageServer.log'
 
-nnoremap <silent> <leader>a :ArgWrap<CR>
+nnoremap <silent> <Leader>a :ArgWrap<CR>
 
 autocmd FileType rust let b:switch_custom_definitions =
       \ [

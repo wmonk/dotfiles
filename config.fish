@@ -17,6 +17,11 @@ alias vim="nvim"
 # nodejs
 set -g NODE_PATH "$HOME/.npm-packages/lib/node_modules" $NODE_PATH
 set -g PATH (yarn global bin) "/Users/will/Library/Python/bin" "/usr/local/sbin" "./node_modules/.bin" $PATH
+set -g ANDROID_HOME $HOME/Library/Android/sdk
+set -g PATH $ANDROID_HOME/emulator $PATH
+set -g PATH $ANDROID_HOME/tools $PATH
+set -g PATH $ANDROID_HOME/tools/bin $PATH
+set -g PATH $ANDROID_HOME/platform-tools $PATH
 
 set __fish_git_prompt_showdirtystate 'yes'
 set __fish_git_prompt_describe_style 'branch'
