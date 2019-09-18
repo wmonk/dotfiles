@@ -21,6 +21,9 @@ set incsearch
 set inccommand=split
 set foldmethod=manual
 set mouse=a
+set cmdheight=2
+set updatetime=300
+set shortmess+=c
 
 let g:loaded_python_provider = 1
 let g:python_host_prog='/usr/local/bin/python3'
@@ -51,6 +54,7 @@ Plug 'cormacrelf/vim-colors-github'
 Plug 'AndrewRadev/switch.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'FooSoft/vim-argwrap'
+Plug 'SirVer/ultisnips'
 Plug 'zooxyt/Ultisnips-rust'
 Plug 'tomtom/tcomment_vim'
 Plug 'rust-lang/rust.vim'
@@ -71,21 +75,13 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'alexbyk/vim-ultisnips-js-testing'
 Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
-Plug 'autozimu/LanguageClient-neovim', {
-   \ 'branch': 'next',
-   \ 'do': 'bash install.sh',
-   \ }
-Plug 'ncm2/ncm2'
-" Plug 'ncm2/ncm2-bufword'
-" Plug 'ncm2/ncm2-tmux'
-" Plug 'ncm2/ncm2-path'
-" Plug 'ncm2/ncm2-ultisnips'
 Plug 'roxma/nvim-yarp'
 Plug 'wmonk/vim-react-snippets'
 Plug 'epilande/vim-es2015-snippets'
 Plug 'bogado/file-line'
-Plug 'Raimondi/delimitMate'
+" Plug 'Raimondi/delimitMate'
 Plug 'nathanaelkane/vim-indent-guides'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 call plug#end()
 
@@ -153,26 +149,6 @@ inoremap <expr> <c-x><c-l> fzf#vim#complete(fzf#wrap({
   \ 'options': '--ansi --delimiter : --nth 3..',
   \ 'reducer': { lines -> join(split(lines[0], ':\zs')[2:], '') }}))
 
-    " \ 'javascript': ['javascript-typescript-stdio', '-l', '~/Code/tmp/ll'],
-    " \ 'javascript.jsx': ['javascript-typescript-stdio', '-l', '~/Code/tmp/ll'],
-    " \ 'javascript': ['flow', 'lsp', '--from', './node_modules/.bin'],
-    " \ 'javascript.jsx': ['flow', 'lsp', '--from', './node_modules/.bin'],
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'nightly', 'rls'],
-    \ 'python': ['python', '-m', 'pyls', '-vv'],
-    \ 'javascript': ['javascript-typescript-stdio', '-l', '~/Code/tmp/ll'],
-    \ 'javascript.jsx': ['javascript-typescript-stdio', '-l', '~/Code/tmp/ll'],
-    \ 'typescript': ['typescript-language-server', '--stdio'],
-    \ 'reason': ['/Users/will/Downloads/reason-language-server/reason-language-server.exe']
-    \ }
-let g:LanguageClient_autoStart = 1
-
-nnoremap <silent> <Leader>T :call LanguageClient_textDocument_hover()<CR>
-nnoremap <silent> <Leader>D :vsplit<CR><C-W>l:call LanguageClient_textDocument_definition()<CR>
-nnoremap <silent> <Leader>d :call LanguageClient_textDocument_definition()<CR>
-" nnoremap <silent> <Leader>r :call LanguageClient_textDocument_rename()<CR>
-nnoremap <silent> <Leader>R :call LanguageClient_textDocument_references()<CR>
-
 nnoremap <Leader>j :cp<CR>
 nnoremap <Leader>c :copen<CR>
 nnoremap <Leader>s :source ~/.config/nvim/test.vim<CR>
@@ -184,7 +160,7 @@ endfunction
 xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
 
 let g:UltiSnipsSnippetDiretories=["~/.config/nvim/plugged/"]
-let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsExpandTrigger="<C-Space>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
@@ -261,16 +237,6 @@ autocmd BufWinLeave * call clearmatches()
 " Disable tmux navigator when zooming the Vim pane
 let g:tmux_navigator_disable_when_zoomed = 1
 
-
-" ncm2
-autocmd BufEnter  *  call ncm2#enable_for_buffer()
-set completeopt=noinsert,menuone,noselect
-inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-
-" Use <TAB> to select the popup menu:
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
 au BufNewFile,BufRead,BufReadPost Pipfile set ft=cfg
 au BufNewFile,BufRead,BufReadPost .babelrc set ft=json
 
@@ -278,3 +244,50 @@ nmap <Space>m <Plug>(quickhl-manual-this)
 xmap <Space>m <Plug>(quickhl-manual-this)
 nmap <Space>M <Plug>(quickhl-manual-reset)
 xmap <Space>M <Plug>(quickhl-manual-reset)
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" inoremap <expr> <tab> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+nmap <leader>rn <Plug>(coc-rename)
+
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+xmap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap if <Plug>(coc-funcobj-i)
+omap af <Plug>(coc-funcobj-a)
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
