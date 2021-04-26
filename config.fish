@@ -4,6 +4,8 @@ end
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+export SHELL=/usr/local/bin/fish
+
 
 set -U TERM xterm-256coor
 export EDITOR=nvim
