@@ -5,7 +5,8 @@ set expandtab
 set hidden
 set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·,eol:⨼
 set list!
-set undodir=$HOME/.vim/undodir
+set undofile
+set undodir=~/.config/nvim/undodir
 set undolevels=1000
 set undoreload=10000
 set noswapfile
@@ -24,9 +25,11 @@ set mouse=a
 set cmdheight=2
 set updatetime=300
 set shortmess+=c
+set suffixesadd=.js,.jsx,.ts,.tsx
+botright cwindow
 
-let g:loaded_python_provider = 1
-let g:python_host_prog='/usr/local/bin/python3'
+" let g:loaded_python_provider = 1
+" let g:python_host_prog='/usr/bin/python3'
 let g:python3_host_prog='/usr/local/bin/python3'
 let g:EditorConfig_exclude_patterns = ['fugitive://.\*']
 
@@ -39,12 +42,14 @@ hi SpellBad gui=undercurl guisp=red term=undercurl cterm=undercurl
 
 call plug#begin('~/.local/share/nvim/plugged')
 
+Plug 'keith/swift.vim'
 Plug 'patstockwell/vim-monokai-tasty'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'elzr/vim-json'
+Plug 'jeetsukumaran/vim-indentwise'
 Plug 'editorconfig/editorconfig-vim'
-
+Plug 'tpope/vim-abolish'
 Plug 'w0rp/ale'
 Plug 'szorfein/fromthehell.vim'
 Plug 't9md/vim-quickhl'
@@ -54,15 +59,16 @@ Plug 'cormacrelf/vim-colors-github'
 Plug 'AndrewRadev/switch.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'FooSoft/vim-argwrap'
-Plug 'SirVer/ultisnips'
+" Plug 'SirVer/ultisnips'
 Plug 'zooxyt/Ultisnips-rust'
 Plug 'tomtom/tcomment_vim'
+Plug 'mechatroner/rainbow_csv'
 Plug 'rust-lang/rust.vim'
 Plug 'neomake/neomake'
 Plug 'tpope/vim-dispatch'
 Plug 'moll/vim-node'
 Plug 'wmonk/vim-makegreen'
-Plug 'janko-m/vim-test'
+" Plug 'vim-test/vim-test'
 Plug 'kassio/neoterm'
 Plug 'sbdchd/neoformat'
 Plug 'tpope/vim-surround'
@@ -72,16 +78,19 @@ Plug 'tpope/vim-repeat'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'morhetz/gruvbox'
 Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+" Plug 'honza/vim-snippets'
 Plug 'alexbyk/vim-ultisnips-js-testing'
-Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'roxma/nvim-yarp'
 Plug 'wmonk/vim-react-snippets'
 Plug 'epilande/vim-es2015-snippets'
 Plug 'bogado/file-line'
-" Plug 'Raimondi/delimitMate'
+Plug 'Raimondi/delimitMate'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'antoinemadec/coc-fzf', {'branch': 'release'}
+Plug 'mbbill/undotree'
 
 call plug#end()
 
@@ -99,9 +108,15 @@ map <Leader>w :w<CR>
 map <esc> :noh<cr>
 tmap <esc> <c-\><c-n><esc><cr>
 
-set background=dark
-let g:gruvbox_contrast_dark="hard"
-colorscheme gruvbox
+" set background=dark
+" let g:gruvbox_contrast_dark="hard"
+" colorscheme gruvbox
+
+" more blocky diff markers in signcolumn (e.g. GitGutter)
+let g:github_colors_soft = 1
+let g:github_colors_block_diffmark = 1
+set background=light
+colorscheme github
 
 noremap <silent> <C-l> <c-w>l
 tnoremap <silent> <C-l> <C-\><C-n><c-w>l
@@ -112,18 +127,24 @@ tnoremap <silent> <C-k> <C-\><C-n><c-w>k
 noremap <silent> <C-j> <c-w>j
 
 map <C-p> :GFiles<CR>
-function! Agerium()
+function! Rgerium()
   let params = input('Search files for: ')
-  execute 'Ag ' . params
+  execute 'Rg ' . params
 endfunction
-map <Leader>i :call Agerium()<CR>
-vmap <Leader>i y:Ag <C-R>"<CR>
+map <Leader>i :call Rgerium()<CR>
+vmap <Leader>i y:Rg <C-R>"<CR>
+vmap " S"
+vmap B SB
+vmap b Sb
+vmap ] S]
+vmap [ S[
 map <Leader>g :GFiles?<CR>
 map <Leader>b :Buffers<CR>
 map <Leader>l :Lines<CR>
 map <C-\-> :FZF <c-r>=fnameescape(expand('%:p:h'))<cr>/<cr>
-command! -bang -nargs=* Ag
-  \ call fzf#vim#ag(<q-args>,
+imap <c-x><c-f> <plug>(fzf-complete-path)
+command! -bang -nargs=* Rg
+  \ call fzf#vim#rg(<q-args>,
   \                 <bang>0 ? fzf#vim#with_preview('up:60%')
   \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
   \                 <bang>0)
@@ -136,9 +157,6 @@ command! -bang -nargs=* Rg
   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
   \   <bang>0)
 
-command! -bang Dir
-  \ call fzf#run(fzf#wrap('my-stuff', {'dir': '~/Code/minifort/services'}, <bang>0))
-
 command! -bang -nargs=? -complete=dir Files
   \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
@@ -148,6 +166,20 @@ inoremap <expr> <c-x><c-l> fzf#vim#complete(fzf#wrap({
   \ 'source': 'rg -n ^ --color always',
   \ 'options': '--ansi --delimiter : --nth 3..',
   \ 'reducer': { lines -> join(split(lines[0], ':\zs')[2:], '') }}))
+
+function! s:build_quickfix_list(lines)
+  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+  copen
+  cc
+endfunction
+
+let g:fzf_action = {
+  \ 'ctrl-q': function('s:build_quickfix_list'),
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all'
 
 nnoremap <Leader>j :cp<CR>
 nnoremap <Leader>c :copen<CR>
@@ -159,18 +191,27 @@ function! ExecuteMacroOverVisualRange()
 endfunction
 xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
 
-let g:UltiSnipsSnippetDiretories=["~/.config/nvim/plugged/"]
-let g:UltiSnipsExpandTrigger="<C-Space>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+" Use <C-l> for trigger snippet expand.
+imap <C-l> <Plug>(coc-snippets-expand)
+inoremap <expr> <C-l> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
+" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+
+" Use <leader>x for convert visual selected code to snippet
+xmap <leader>x <Plug>(coc-convert-snippet)
+
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-j>'
+
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>'
+
+" Use <C-j> for both expand and jump (make expand higher priority.)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
 let g:neoformat_enabled_python = ['black']
 let g:neoformat_enabled_javascript = ['prettier']
-" let g:formatdef_js_prettier= '"prettier --stdin --single-quote --no-semi --no-bracket-spacing --tab-width 4"'
-" let g:formatters_javascript = ['js_prettier']
-"
-" let g:formatdef_elm_format = '"elm-format --stdin"'
-" let g:formatters_elm = ['elm_format']
+
 augroup fmt
   autocmd!
   autocmd BufWritePre * undojoin | Neoformat
@@ -185,9 +226,9 @@ nnoremap <Leader>P "+P
 vnoremap <Leader>p "+p
 vnoremap <Leader>P "+P
  
-let g:test#javascript#jest#file_pattern = '\vtests?\.(js|jsx|coffee)$'
-let g:test#javascript#jest#options = '--reporters jest-simple-reporter'
-noremap <Leader>t :TestFile -strategy=neomake<cr>
+" let g:test#javascript#jest#file_pattern = '\vtests?\.(js|jsx|coffee|ts|tsx)$'
+" let g:test#javascript#jest#options = '--reporters jest-simple-reporter'
+" noremap <Leader>t :TestFile -strategy=neomake<cr>
 noremap <Leader>s *Nciw
 noremap <Leader>r yiw:%s/<C-r>"/
 
@@ -252,12 +293,25 @@ endfunction
 
 inoremap <silent><expr> <c-space> coc#refresh()
 
-" inoremap <expr> <tab> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Remap <C-f> and <C-b> for scroll float windows/popups.
+" Note coc#float#scroll works on neovim >= 0.4.0 or vim >= 8.2.0750
+nnoremap <nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+nnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+inoremap <nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+inoremap <nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+
+vnoremap <nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#nvim_scroll(1, 1) : "\<C-f>"
+vnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#nvim_scroll(0, 1) : "\<C-b>"
+
+nmap <silent> <C-s> <Plug>(coc-range-select)
+xmap <silent> <C-s> <Plug>(coc-range-select)
 
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+noremap <Leader>o :CocFzfList outline<cr>
+noremap <Leader>d :CocFzfList diagnostics<cr>
 
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
@@ -286,8 +340,11 @@ xmap af <Plug>(coc-funcobj-a)
 omap if <Plug>(coc-funcobj-i)
 omap af <Plug>(coc-funcobj-a)
 
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? coc#_select_confirm() :
-      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+" inoremap <silent><expr> <TAB>
+"       \ pumvisible() ? coc#_select_confirm() :
+"       \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+"       \ <SID>check_back_space() ? "\<TAB>" :
+"       \ coc#refresh()
+"
+autocmd BufEnter *.tsx set filetype=typescript.tsx
+
