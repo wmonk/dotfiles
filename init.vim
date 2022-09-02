@@ -1,3 +1,4 @@
+let $BAT_THEME='Coldark-Cold'
 set termguicolors
 set sw=4
 set ts=4
@@ -35,6 +36,7 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.\*']
 
 let &t_Cs = "\e[4:3m"
 let &t_Ce = "\e[4:3m"
+let g:gh_color = "soft"
 
 let g:vim_monokai_tasty_italic = 1
 
@@ -42,6 +44,8 @@ hi SpellBad gui=undercurl guisp=red term=undercurl cterm=undercurl
 
 call plug#begin('~/.local/share/nvim/plugged')
 
+Plug 'metakirby5/codi.vim'
+Plug 'pantharshit00/vim-prisma'
 Plug 'keith/swift.vim'
 Plug 'patstockwell/vim-monokai-tasty'
 Plug 'pangloss/vim-javascript'
@@ -56,6 +60,7 @@ Plug 't9md/vim-quickhl'
 Plug 'nightsense/stellarized'
 Plug 'iloginow/vim-stylus'
 Plug 'cormacrelf/vim-colors-github'
+Plug 'wojciechkepka/vim-github-dark'
 Plug 'AndrewRadev/switch.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'FooSoft/vim-argwrap'
@@ -78,7 +83,7 @@ Plug 'tpope/vim-repeat'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'morhetz/gruvbox'
 Plug 'SirVer/ultisnips'
-" Plug 'honza/vim-snippets'
+Plug 'honza/vim-snippets'
 Plug 'alexbyk/vim-ultisnips-js-testing'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -104,6 +109,7 @@ imap jk <Esc>
 
 map <Leader>q :x<CR>
 map <Leader>w :w<CR>
+map <Leader>f :Neoformat<CR>
 
 map <esc> :noh<cr>
 tmap <esc> <c-\><c-n><esc><cr>
@@ -112,11 +118,17 @@ tmap <esc> <c-\><c-n><esc><cr>
 " let g:gruvbox_contrast_dark="hard"
 " colorscheme gruvbox
 
-" more blocky diff markers in signcolumn (e.g. GitGutter)
-let g:github_colors_soft = 1
-let g:github_colors_block_diffmark = 1
-set background=light
-colorscheme github
+if strftime("%H") < 20
+  set background=light
+
+  " more blocky diff markers in signcolumn (e.g. GitGutter)
+  let g:github_colors_soft = 1
+  let g:github_colors_block_diffmark = 1
+  set background=light
+  colorscheme github
+else
+  colorscheme ghdark
+endif
 
 noremap <silent> <C-l> <c-w>l
 tnoremap <silent> <C-l> <C-\><C-n><c-w>l
@@ -144,18 +156,17 @@ map <Leader>l :Lines<CR>
 map <C-\-> :FZF <c-r>=fnameescape(expand('%:p:h'))<cr>/<cr>
 imap <c-x><c-f> <plug>(fzf-complete-path)
 command! -bang -nargs=* Rg
-  \ call fzf#vim#rg(<q-args>,
-  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \                 <bang>0)
-
-
-command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
-  \   <bang>0 ? fzf#vim#with_preview('up:60%')
-  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \   <bang>0)
+  \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview(), <bang>0)
+
+
+" command! -bang -nargs=* Rg
+"   \ call fzf#vim#grep(
+"   \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+"   \   <bang>0 ? fzf#vim#with_preview('up:60%')
+"   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+"   \   <bang>0)
 
 command! -bang -nargs=? -complete=dir Files
   \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
@@ -211,11 +222,6 @@ let g:coc_snippet_prev = '<c-k>'
 imap <C-j> <Plug>(coc-snippets-expand-jump)
 let g:neoformat_enabled_python = ['black']
 let g:neoformat_enabled_javascript = ['prettier']
-
-augroup fmt
-  autocmd!
-  autocmd BufWritePre * undojoin | Neoformat
-augroup END
 
 vnoremap  <Leader>y  "+y
 nnoremap  <Leader>Y  "+yg_
@@ -291,7 +297,7 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-inoremap <silent><expr> <c-space> coc#refresh()
+inoremap <silent><expr> <c-s> coc#refresh()
 
 " Remap <C-f> and <C-b> for scroll float windows/popups.
 " Note coc#float#scroll works on neovim >= 0.4.0 or vim >= 8.2.0750
@@ -303,8 +309,8 @@ inoremap <nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(
 vnoremap <nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#nvim_scroll(1, 1) : "\<C-f>"
 vnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#nvim_scroll(0, 1) : "\<C-b>"
 
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
+" nmap <silent> <C-s> <Plug>(coc-range-select)
+" xmap <silent> <C-s> <Plug>(coc-range-select)
 
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
@@ -334,6 +340,9 @@ nmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>ac  <Plug>(coc-codeaction)
 " Fix autofix problem of current line
 nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Run the Code Lens action on the current line.
+nmap <leader>cl  <Plug>(coc-codelens-action)
 
 xmap if <Plug>(coc-funcobj-i)
 xmap af <Plug>(coc-funcobj-a)
